@@ -1,0 +1,102 @@
+---
+// Placeholder landing page — used to test the Astro → GitHub → Cloudflare Pages
+// deploy pipeline before the real site is built.
+const whatsappNumber = "6580000000"; // TODO: replace with the school's real WhatsApp number
+const whatsappLink = `https://wa.me/${whatsappNumber}`;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Русская школа в Сингапуре — занятия для детей, чтобы сохранить родной язык, живя за границей."
+    />
+    <title>Русская школа в Сингапуре</title>
+    <style>
+      :root {
+        --brand: #2563eb;
+        --brand-dark: #1e40af;
+        --wa: #25d366;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #1f2937;
+        background: linear-gradient(160deg, #eff6ff 0%, #ffffff 60%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+      main {
+        max-width: 640px;
+        text-align: center;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--brand-dark);
+        background: #dbeafe;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        margin-bottom: 1.5rem;
+      }
+      h1 {
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
+        line-height: 1.15;
+        margin: 0 0 1rem;
+      }
+      p.lead {
+        font-size: 1.15rem;
+        color: #4b5563;
+        margin: 0 auto 2rem;
+        max-width: 30rem;
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: var(--wa);
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 0.9rem 1.6rem;
+        border-radius: 999px;
+        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
+        transition: transform 0.15s ease;
+      }
+      .cta:hover {
+        transform: translateY(-2px);
+      }
+      footer {
+        margin-top: 3rem;
+        font-size: 0.85rem;
+        color: #9ca3af;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <span class="badge">Скоро открытие сайта</span>
+      <h1>Русская школа в Сингапуре</h1>
+      <p class="lead">
+        Помогаем детям русскоязычных родителей сохранить и развивать родной язык,
+        живя за границей.
+      </p>
+      <a class="cta" href={whatsappLink} target="_blank" rel="noopener">
+        Написать в WhatsApp
+      </a>
+      <footer>Placeholder page · deploy test</footer>
+    </main>
+  </body>
+</html>
