@@ -1,102 +1,884 @@
 ---
-// Placeholder landing page — used to test the Astro → GitHub → Cloudflare Pages
-// deploy pipeline before the real site is built.
-const whatsappNumber = "6580000000"; // TODO: replace with the school's real WhatsApp number
-const whatsappLink = `https://wa.me/${whatsappNumber}`;
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+
+// Images (Astro optimises these at build time)
+import heroImg from "../assets/images/gallery/summer_camp_kids_1.jpeg";
+import weekendImg from "../assets/images/programs/program_weekend_school.jpg";
+import speechImg from "../assets/images/programs/program_speech_therapy.jpg";
+import campImg2 from "../assets/images/gallery/summer_camp_kids_2.jpeg";
+import campImg3 from "../assets/images/gallery/summer_camp_kids_3.jpg";
+import teacherIana from "../assets/images/teachers/teacher_yana_belskaya.jpeg";
+import teacherAlexandra from "../assets/images/teachers/teacher_aleksandra_novikova.png";
+import teacherOlga from "../assets/images/teachers/teacher_olga_belskaya.jpg";
+import statIcon1 from "../assets/images/icons/icon_graduation_cap.png";
+import statIcon2 from "../assets/images/icons/icon_brainstorming.png";
+import statIcon3 from "../assets/images/icons/icon_teaching.png";
+// Weekday-programme thumbnails
+import pgPlaycamp from "../assets/images/programs/program_playcamp_wunderkind_3_5.jpg";
+import pgReading from "../assets/images/programs/program_russian_language_grades_1_5.jpg";
+import pgChess from "../assets/images/programs/program_chess_class.jpg";
+import pgArt from "../assets/images/programs/program_art_class.jpg";
+import pgCooking from "../assets/images/programs/program_cooking_class.jpg";
+import pgParent from "../assets/images/programs/program_parent_child_class.jpg";
+
+const WA =
+  "https://wa.me/6580745012?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%20%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D1%8F%20%D0%B2%20KIT";
+
+const stats = [
+  { icon: statIcon1, value: "100+", label: "учеников" },
+  {
+    icon: statIcon2,
+    value: "с 2006",
+    label: "учим детей · в Сингапуре с 2017",
+  },
+  { icon: statIcon3, value: "10", label: "преподавателей" },
+];
+
+const weekdayGrid = [
+  { img: pgPlaycamp, alt: "Билингвальный плейкэмп" },
+  { img: pgReading, alt: "Русский язык и литература" },
+  { img: pgChess, alt: "Шахматы" },
+  { img: pgArt, alt: "Арт-класс «Художка»" },
+  { img: pgCooking, alt: "Кулинария" },
+  { img: pgParent, alt: "Занятия для малышей с родителями" },
+];
+
+const teachers = [
+  {
+    photo: teacherIana,
+    name: "Яна Бельская",
+    role: "Логопед-дефектолог",
+    bio: "Логопед-дефектолог, социальный и монтессори-педагог. 12 лет работы с детьми, из них 6 — логопедом-дефектологом; большой опыт с детьми-билингвами. Диплом логопеда РУДН (Москва). Особое внимание уделяет межполушарному взаимодействию и сенсорной стимуляции.",
+  },
+  {
+    photo: teacherAlexandra,
+    name: "Александра Новикова",
+    role: "Музыка и вокал",
+    bio: "Педагог с высшим музыкальным образованием (Master’s degree) и 20-летним стажем. Занимается с учениками от 4 лет. Её ученики занимают призовые места на конкурсах и поступают в ведущие музыкально-театральные вузы Англии и Америки.",
+  },
+  {
+    photo: teacherOlga,
+    name: "Ольга Бельская",
+    role: "Основатель KIT",
+    bio: "Более 15 лет в образовании: в 2006 году открыла Монтессори-школу в Москве, а с 2017 года развивает KIT в Сингапуре. Её задача сегодня — помочь русскоязычным детям сохранить родной язык, живя в англоязычной среде, и уверенно чувствовать себя в двух культурах.",
+  },
+];
+
+const reviews = [
+  {
+    name: "Marina Semenkova",
+    meta: "Google · апрель 2025",
+    text: "Хочу выразить огромную благодарность замечательным преподавателям школы KIT за профессионализм, индивидуальный подход к каждому ученику, персональную поддержку и семейную атмосферу. Рекомендую для детей, которые испытывают стресс в больших международных школах и нуждаются в более внимательном отношении.",
+  },
+  {
+    name: "Anna Volkova",
+    meta: "Google · май 2024",
+    text: "…we needed additional support of a speech therapist. Not only the result, but also the attitude and attention by all the staff and specifically Iana were outstanding. We felt so welcome from the first day… it was hard to take my kid back home, as he wanted to stay for more.",
+  },
+  {
+    name: "Angela Belka",
+    meta: "Google · март 2025",
+    text: "Our son loves the school, teachers and schoolmates. And we as parents appreciate the teachers’ approach and attention, which is not only helping to progress academically, but to build self-confidence as well.",
+  },
+  {
+    name: "Алена Жданова",
+    meta: "Google · март 2025",
+    text: "A great school with a wonderful atmosphere. Our children are happy to attend classes and always come back with new knowledge and positive impressions. The teachers are attentive, kind, and truly care about the children, helping each one reach their full potential.",
+  },
+  {
+    name: "Yulia McGrath",
+    meta: "Google · март 2025",
+    text: "Highly recommended school with small class setup environment and individual approach to every student. Great option if you are looking for personalised attention to your child while following IPC. Run by motivated, enthusiastic and qualified specialists and teachers!",
+  },
+];
 ---
 
-<!doctype html>
-<html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Русская школа в Сингапуре — занятия для детей, чтобы сохранить родной язык, живя за границей."
-    />
-    <title>Русская школа в Сингапуре</title>
-    <style>
-      :root {
-        --brand: #2563eb;
-        --brand-dark: #1e40af;
-        --wa: #25d366;
+<Layout>
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="top">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">KIT · Русская школа в Сингапуре</span>
+        <h1>
+          Русская школа в Сингапуре — <span class="hl"
+            >от 10 месяцев до старших классов</span
+          >
+        </h1>
+        <p class="lead">
+          Чтобы русский оставался родным, пока ребёнок растёт в англоязычной
+          среде.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-hero">
+            <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"
+              ><path
+                fill="currentColor"
+                d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.42 5.82c0 4.54-3.7 8.23-8.25 8.23-1.52 0-3.01-.41-4.3-1.18l-.31-.18-3.12.82.83-3.04-.2-.32a8.16 8.16 0 0 1-1.26-4.35c0-4.54 3.7-8.24 8.36-8.24m4.52 11.62c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28"
+              ></path></svg
+            >
+            <span>Написать в WhatsApp</span>
+          </a>
+          <a class="btn btn-ghost" href="#programs">Наши программы</a>
+        </div>
+        <p class="hero-note">
+          Обычно отвечаем в течение рабочего дня · онлайн 9:00–18:00, 7 дней в
+          неделю
+        </p>
+      </div>
+      <div class="hero-media">
+        <Image
+          src={heroImg}
+          alt="Дети на занятиях в русской школе KIT в Сингапуре"
+          width={1000}
+          loading="eager"
+          fetchpriority="high"
+          class="hero-img"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Trust strip ===== -->
+  <section class="trust" aria-label="KIT в цифрах">
+    <div class="container trust-inner">
+      {
+        stats.map((s) => (
+          <div class="stat">
+            <Image src={s.icon} alt="" width={56} height={56} class="stat-icon" />
+            <div>
+              <div class="stat-value">{s.value}</div>
+              <div class="stat-label">{s.label}</div>
+            </div>
+          </div>
+        ))
       }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        color: #1f2937;
-        background: linear-gradient(160deg, #eff6ff 0%, #ffffff 60%);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1.5rem;
-      }
-      main {
-        max-width: 640px;
-        text-align: center;
-      }
-      .badge {
-        display: inline-block;
-        font-size: 0.8rem;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--brand-dark);
-        background: #dbeafe;
-        padding: 0.35rem 0.9rem;
-        border-radius: 999px;
-        margin-bottom: 1.5rem;
-      }
-      h1 {
-        font-size: clamp(1.8rem, 5vw, 2.8rem);
-        line-height: 1.15;
-        margin: 0 0 1rem;
-      }
-      p.lead {
-        font-size: 1.15rem;
-        color: #4b5563;
-        margin: 0 auto 2rem;
-        max-width: 30rem;
-      }
-      .cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        background: var(--wa);
-        color: #fff;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 1.1rem;
-        padding: 0.9rem 1.6rem;
-        border-radius: 999px;
-        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
-        transition: transform 0.15s ease;
-      }
-      .cta:hover {
-        transform: translateY(-2px);
-      }
-      footer {
-        margin-top: 3rem;
-        font-size: 0.85rem;
-        color: #9ca3af;
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <span class="badge">Скоро открытие сайта</span>
-      <h1>Русская школа в Сингапуре</h1>
-      <p class="lead">
-        Помогаем детям русскоязычных родителей сохранить и развивать родной язык,
-        живя за границей.
-      </p>
-      <a class="cta" href={whatsappLink} target="_blank" rel="noopener">
-        Написать в WhatsApp
-      </a>
-      <footer>Placeholder page · deploy test</footer>
-    </main>
-  </body>
-</html>
+    </div>
+  </section>
+
+  <!-- ===== Mission ===== -->
+  <section class="mission">
+    <div class="container mission-inner">
+      <div class="section-head">
+        <span class="eyebrow">Кто мы</span>
+        <h2>Чтобы русский оставался родным</h2>
+        <p>
+          Наши ученики растут в англоязычном Сингапуре. Мы следим за тем, чтобы
+          русский при этом не отходил на второй план: чтобы на нём было интересно
+          читать, легко говорить и не страшно ошибаться.
+        </p>
+        <p>
+          А тем, кто только переехал, помогаем освоиться — с языком, со школой и
+          с новыми друзьями. Небольшие группы и внимание к каждому ребёнку — то,
+          за что нас чаще всего благодарят родители.
+        </p>
+      </div>
+      <ul class="mission-points">
+        <li>
+          <strong>Маленькие группы</strong>
+          <span>Каждого ребёнка видят и слышат — без стресса больших классов.</span>
+        </li>
+        <li>
+          <strong>Семейная атмосфера</strong>
+          <span>Тёплая среда, куда дети приходят с удовольствием.</span>
+        </li>
+        <li>
+          <strong>Индивидуальный подход</strong>
+          <span>Подбираем темп и формат под уровень и возраст ребёнка.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Flagship programmes ===== -->
+  <section class="programs" id="programs">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Программы</span>
+        <h2>Чему и как мы учим</h2>
+        <p class="lead" style="margin-inline:auto">
+          Занятия для детей от 10 месяцев до старших классов. Ниже — главное; за
+          подробностями и расписанием пишите нам в WhatsApp.
+        </p>
+      </div>
+
+      <div class="flagships">
+        <article class="flagship">
+          <div class="flagship-media">
+            <Image src={weekendImg} alt="Субботняя и воскресная школа KIT" width={720} />
+            <span class="badge badge-accent">Флагман</span>
+          </div>
+          <div class="flagship-body">
+            <h3>Субботняя и воскресная школа</h3>
+            <p class="meta-line">Сб и Вс · 09:30–12:30 · 3 часа + обед · ~2–12 лет</p>
+            <p>
+              Чем занять ребёнка в выходной с пользой? Занятия разделены на два
+              блока: <strong>академический</strong> — чтение, письмо, разговорная
+              речь и математика; и <strong>всестороннее развитие</strong> —
+              арт-студия, занимательная наука, шахматы и кулинарные
+              мастер-классы. Программа выстроена по возрасту — от подготовки к
+              школе до средних классов.
+            </p>
+            <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-weekend">
+              Узнать про запись
+            </a>
+          </div>
+        </article>
+
+        <article class="flagship">
+          <div class="flagship-media">
+            <Image src={speechImg} alt="Логопед-дефектолог в KIT" width={720} />
+            <span class="badge badge-brand">Логопед</span>
+          </div>
+          <div class="flagship-body">
+            <h3>Развитие речи и логопед</h3>
+            <p class="meta-line">Индивидуально · логопед-дефектолог Яна</p>
+            <p>
+              Занятия ведёт наш логопед-дефектолог с большим опытом работы с
+              детьми-билингвами. В программе: развитие речи, артикуляционная и
+              дыхательная гимнастика, звукопроизношение, логопедический массаж,
+              развитие мелкой и крупной моторики, сенсорное развитие и работа с
+              разными материалами.
+            </p>
+            <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-speech">
+              Записаться на консультацию
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Other weekday programmes ===== -->
+  <section class="other-programs" id="other-programs">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">В течение недели</span>
+        <h2>И ещё десятки занятий каждую неделю</h2>
+        <p class="lead">
+          KIT ведёт широкий набор будничных занятий — от малышей до подростков.
+          Если сомневаетесь, что подойдёт вашему ребёнку, просто напишите нам.
+        </p>
+      </div>
+
+      <div class="cat-grid">
+        <div class="cat-card">
+          <h3>Малыши · 10 мес – 6 лет</h3>
+          <p>
+            Плейкэмпы и развивающие группы, билингвальное погружение, музыка,
+            раннее чтение («Читайка») и развитие речи.
+          </p>
+        </div>
+        <div class="cat-card">
+          <h3>Школьники и подростки</h3>
+          <p>
+            Русский язык и литература, математика (в том числе олимпиадная),
+            наука, шахматы, искусство (включая подготовку к IGCSE),
+            программирование (Minecraft, Python), китайский разговорный клуб.
+          </p>
+        </div>
+        <div class="cat-card">
+          <h3>Индивидуально · 1&nbsp;:&nbsp;1</h3>
+          <p>
+            Математика, русский язык, китайский язык и занятия с
+            логопедом — один на один, в удобном темпе.
+          </p>
+        </div>
+      </div>
+
+      <div class="thumb-grid">
+        {
+          weekdayGrid.map((t) => (
+            <Image src={t.img} alt={t.alt} width={420} class="thumb" />
+          ))
+        }
+      </div>
+
+      <div class="inline-cta">
+        <a class="link-arrow" href="/schedule">Полное расписание →</a>
+        <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-weekday">
+          Подобрать занятие в WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Camps teaser ===== -->
+  <section class="camps" id="camps">
+    <div class="container camps-inner">
+      <div class="camps-copy">
+        <span class="eyebrow">Каникулы</span>
+        <h2>Каникулярные лагеря несколько раз в год</h2>
+        <p class="lead">
+          Творчество, наука, спорт и русский язык — в двух форматах: полное
+          погружение на русском и билингвальный (русский + английский), где
+          языковые навыки подтягиваются легко, в игровой форме.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="/camps">Подробнее о лагерях →</a>
+          <a class="btn btn-ghost" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-camps">
+            Спросить про смены
+          </a>
+        </div>
+      </div>
+      <div class="camps-media">
+        <Image src={campImg2} alt="Летний лагерь KIT" width={520} class="camps-img camps-img-1" />
+        <Image src={campImg3} alt="Дети в лагере KIT" width={420} class="camps-img camps-img-2" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Teachers ===== -->
+  <section class="teachers" id="teachers">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Команда</span>
+        <h2>Наши преподаватели</h2>
+        <p class="lead" style="margin-inline:auto">
+          Специалисты с профильным образованием и многолетним опытом работы с
+          детьми-билингвами.
+        </p>
+      </div>
+
+      <div class="teacher-grid">
+        {
+          teachers.map((t) => (
+            <article class="teacher-card">
+              <Image src={t.photo} alt={t.name} width={360} class="teacher-photo" />
+              <h3>{t.name}</h3>
+              <p class="teacher-role">{t.role}</p>
+              <p class="teacher-bio">{t.bio}</p>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="center-link">
+        <a class="link-arrow" href="/teachers">Все преподаватели →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Reviews ===== -->
+  <section class="reviews" id="reviews">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Отзывы</span>
+        <h2>Что говорят родители</h2>
+      </div>
+      <div class="review-grid">
+        {
+          reviews.map((r) => (
+            <figure class="review-card">
+              <div class="review-stars" aria-label="5 из 5">★★★★★</div>
+              <blockquote>{r.text}</blockquote>
+              <figcaption>
+                <span class="review-name">{r.name}</span>
+                <span class="review-meta">{r.meta}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ teaser ===== -->
+  <section class="faq">
+    <div class="container faq-inner">
+      <div>
+        <span class="eyebrow">Частый вопрос</span>
+        <h2>«Ребёнок почти не говорит по-русски — ему подойдёт?»</h2>
+      </div>
+      <div class="faq-answer">
+        <p>
+          Да. У нас занимаются дети с самым разным уровнем русского — от
+          свободного до нескольких слов. Мы подбираем группу и темп под ребёнка,
+          а на занятиях говорить и ошибаться совсем не страшно.
+        </p>
+        <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-faq">
+          Спросить про вашего ребёнка
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Contact / find us ===== -->
+  <section class="contact" id="contact">
+    <div class="container contact-inner">
+      <div class="contact-copy">
+        <span class="eyebrow">Контакты</span>
+        <h2>Как нас найти</h2>
+        <p class="contact-address">
+          91 Bencoolen St, #08-05 (Office Tower)<br />
+          Sunshine Plaza, Singapore 189652
+        </p>
+        <ul class="contact-list">
+          <li><strong>Метро:</strong> Bencoolen — 3 мин пешком · Bras Basah — 5 мин · Bugis — 9 мин</li>
+          <li><strong>Парковка:</strong> в здании, центральное расположение</li>
+          <li><strong>Часы работы:</strong> онлайн 9:00–18:00, 7 дней в неделю</li>
+          <li><strong>Телефон:</strong> <a href="tel:+6531386228">+65 3138 6228</a></li>
+          <li><strong>Email:</strong> <a href="mailto:kit-enrichment@kit-learning.com">kit-enrichment@kit-learning.com</a></li>
+        </ul>
+        <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-contact">
+          <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"
+            ><path
+              fill="currentColor"
+              d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2"
+            ></path></svg
+          >
+          <span>Написать в WhatsApp</span>
+        </a>
+      </div>
+      <div class="contact-map">
+        <iframe
+          title="KIT Learning на карте — 91 Bencoolen St, Sunshine Plaza"
+          src="https://maps.google.com/maps?q=91%20Bencoolen%20Street%20Sunshine%20Plaza%20Singapore%20189652&z=16&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* ===== Hero ===== */
+  .hero {
+    background: radial-gradient(
+        1200px 500px at 80% -10%,
+        var(--brand-soft),
+        transparent 60%
+      ),
+      linear-gradient(180deg, var(--cream), #fff);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
+    font-weight: 900;
+  }
+  .hero h1 .hl {
+    color: var(--brand);
+  }
+  .hero .lead {
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin-top: 0.25rem;
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin: 1.6rem 0 1rem;
+  }
+  .hero-note {
+    font-size: 0.92rem;
+    color: var(--muted);
+    margin: 0;
+  }
+  .hero-media {
+    position: relative;
+  }
+  .hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+  }
+
+  /* ===== Trust strip ===== */
+  .trust {
+    background: var(--brand);
+    color: #fff;
+    padding: clamp(1.5rem, 3vw, 2.2rem) 0;
+  }
+  .trust-inner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .stat-icon {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 14px;
+    padding: 8px;
+  }
+  .stat-value {
+    font-size: 1.9rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+
+  /* ===== Mission ===== */
+  .mission-inner {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .mission-points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .mission-points li {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.3rem;
+    box-shadow: var(--shadow);
+  }
+  .mission-points strong {
+    display: block;
+    color: var(--brand-dark);
+    margin-bottom: 0.2rem;
+  }
+  .mission-points span {
+    color: var(--muted);
+    font-size: 0.98rem;
+  }
+
+  /* ===== Flagship programmes ===== */
+  .programs {
+    background: linear-gradient(180deg, #fff, var(--cream));
+  }
+  .flagships {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem;
+  }
+  .flagship {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .flagship-media {
+    position: relative;
+  }
+  .flagship-media :global(img) {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+  }
+  .badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    color: #fff;
+  }
+  .badge-accent {
+    background: var(--accent);
+  }
+  .badge-brand {
+    background: var(--brand);
+  }
+  .flagship-body {
+    padding: 1.5rem 1.6rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .meta-line {
+    color: var(--brand-dark);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.7rem;
+  }
+  .btn-sm {
+    padding: 0.7rem 1.1rem;
+    font-size: 0.95rem;
+    align-self: flex-start;
+    margin-top: auto;
+  }
+
+  /* ===== Other programmes ===== */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.3rem;
+    margin-bottom: 2rem;
+  }
+  .cat-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  .cat-card h3 {
+    color: var(--brand-dark);
+  }
+  .cat-card p {
+    color: var(--muted);
+    margin: 0;
+    font-size: 0.98rem;
+  }
+  .thumb-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+  }
+  .thumb {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  .inline-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.3rem 1.6rem;
+    background: var(--brand-soft);
+    border-radius: var(--radius);
+  }
+  .inline-cta .link-arrow {
+    font-size: 1.05rem;
+  }
+
+  /* ===== Camps ===== */
+  .camps {
+    background: var(--accent-soft);
+  }
+  .camps-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .camps-media {
+    position: relative;
+    min-height: 320px;
+  }
+  .camps-img {
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+  }
+  .camps-img-1 {
+    width: 75%;
+    aspect-ratio: 4 / 3;
+  }
+  .camps-img-2 {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 48%;
+    aspect-ratio: 1 / 1;
+    border: 5px solid var(--accent-soft);
+  }
+
+  /* ===== Teachers ===== */
+  .teacher-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6rem;
+  }
+  .teacher-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .teacher-photo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    border: 4px solid var(--brand-soft);
+  }
+  .teacher-role {
+    color: var(--accent);
+    font-weight: 800;
+    margin: 0 0 0.6rem;
+  }
+  .teacher-bio {
+    color: var(--muted);
+    font-size: 0.96rem;
+    margin: 0;
+    text-align: left;
+  }
+  .center-link {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  /* ===== Reviews ===== */
+  .reviews {
+    background: linear-gradient(180deg, var(--cream), #fff);
+  }
+  .review-grid {
+    columns: 3;
+    column-gap: 1.4rem;
+  }
+  .review-card {
+    break-inside: avoid;
+    margin: 0 0 1.4rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  .review-stars {
+    color: #f7b500;
+    letter-spacing: 2px;
+    margin-bottom: 0.6rem;
+  }
+  .review-card blockquote {
+    margin: 0 0 1rem;
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+  .review-name {
+    display: block;
+    font-weight: 800;
+  }
+  .review-meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  /* ===== FAQ ===== */
+  .faq {
+    background: var(--brand-dark);
+    color: #eaf5f3;
+  }
+  .faq .eyebrow {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+  }
+  .faq-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 5vw, 3.5rem);
+    align-items: center;
+  }
+  .faq h2 {
+    color: #fff;
+    margin: 0;
+  }
+  .faq-answer p {
+    font-size: 1.1rem;
+  }
+
+  /* ===== Contact ===== */
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    align-items: stretch;
+  }
+  .contact-address {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .contact-list li {
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+  }
+  .contact-list strong {
+    color: var(--ink);
+  }
+  .contact-map {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    min-height: 360px;
+  }
+  .contact-map iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    border: 0;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    .hero-inner,
+    .mission-inner,
+    .flagships,
+    .cat-grid,
+    .camps-inner,
+    .teacher-grid,
+    .faq-inner,
+    .contact-inner {
+      grid-template-columns: 1fr;
+    }
+    .hero-media {
+      order: -1;
+    }
+    .trust-inner {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .stat {
+      justify-content: flex-start;
+    }
+    .thumb-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .review-grid {
+      columns: 2;
+    }
+    .camps-media {
+      min-height: 260px;
+    }
+  }
+  @media (max-width: 560px) {
+    .thumb-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .review-grid {
+      columns: 1;
+    }
+    .inline-cta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
