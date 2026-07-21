@@ -8,8 +8,8 @@ export interface Props {
 }
 
 const {
-  title = "Русская школа в Сингапуре — KIT | Занятия для детей от 10 месяцев",
-  description = "Уроки русского языка в Сингапуре. Занятия от 18 месяцев до старшеклассников. Занятия с логопедом-дефектологом.",
+  title = "Школа русского языка в Сингапуре — KIT | Занятия для детей от 10 месяцев",
+  description = "KIT — русская школа в Сингапуре. Уроки русского языка для детей от 18 месяцев до старшеклассников, занятия с логопедом-дефектологом.",
 } = Astro.props;
 
 // Single source of truth for the WhatsApp CTA (URL-encoded Russian pre-fill).
@@ -24,7 +24,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": ["EducationalOrganization", "LocalBusiness"],
   name: "KIT Learning",
-  alternateName: "KIT — Русская школа в Сингапуре",
+  alternateName: "KIT — Школа русского языка в Сингапуре",
   url: "https://kit-learning.com",
   description,
   telephone: "+65 3138 6228",
@@ -234,7 +234,7 @@ const nav = [
         </div>
       </div>
       <div class="container footer-bottom">
-        <p>© {new Date().getFullYear()} KIT Learning Pte. Ltd. Русская школа в Сингапуре.</p>
+        <p>© {new Date().getFullYear()} KIT Learning Pte. Ltd. Школа русского языка в Сингапуре.</p>
       </div>
     </footer>
 
