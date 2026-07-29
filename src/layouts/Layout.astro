@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import logo from "../assets/images/branding/logo_kit_learning.png";
+import logo from "../assets/images/branding/logo_kit_learning_trimmed.png";
 
 export interface Props {
   title?: string;
@@ -144,7 +144,13 @@ const nav = [
     <header class="site-header">
       <div class="container header-inner">
         <a href="#top" class="brand" aria-label="KIT Learning — на главную">
-          <Image src={logo} alt="KIT Learning" height={44} class="brand-logo" />
+          <Image
+            src={logo}
+            alt="KIT Learning"
+            height={56}
+            densities={[2]}
+            class="brand-logo"
+          />
         </a>
 
         <nav class="main-nav" aria-label="Основная навигация">
@@ -193,6 +199,7 @@ const nav = [
             src={logo}
             alt="KIT Learning"
             height={40}
+            densities={[2]}
             class="footer-logo"
           />
           <p class="footer-legal">
@@ -457,7 +464,7 @@ const nav = [
       }
       .brand-logo {
         width: auto;
-        height: 44px;
+        height: 56px;
         object-fit: contain;
       }
       .main-nav {

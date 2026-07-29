@@ -296,7 +296,10 @@ const reviews = [
       </div>
 
       <div class="inline-cta">
-        <a class="link-arrow" href="/schedule">Полное расписание →</a>
+        <span class="inline-cta-text"
+          >Не нашли нужное занятие? Напишите — подберём под возраст и уровень
+          ребёнка.</span
+        >
         <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-weekday">
           Подобрать занятие в WhatsApp
         </a>
@@ -316,8 +319,7 @@ const reviews = [
           языковые навыки подтягиваются легко, в игровой форме.
         </p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="/camps">Подробнее о лагерях →</a>
-          <a class="btn btn-ghost" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-camps">
+          <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-camps">
             Спросить про следующий лагерь
           </a>
         </div>
@@ -354,9 +356,6 @@ const reviews = [
         }
       </div>
 
-      <div class="center-link">
-        <a class="link-arrow" href="/teachers">Все преподаватели →</a>
-      </div>
     </div>
   </section>
 
@@ -666,8 +665,10 @@ const reviews = [
     background: var(--brand-soft);
     border-radius: var(--radius);
   }
-  .inline-cta .link-arrow {
-    font-size: 1.05rem;
+  .inline-cta-text {
+    font-weight: 700;
+    color: var(--brand-dark);
+    max-width: 34rem;
   }
 
   /* ===== Camps ===== */
@@ -734,10 +735,6 @@ const reviews = [
     font-size: 0.96rem;
     margin: 0;
     text-align: left;
-  }
-  .center-link {
-    text-align: center;
-    margin-top: 2rem;
   }
 
   /* ===== Reviews ===== */
