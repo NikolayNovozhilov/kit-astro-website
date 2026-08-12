@@ -3,6 +3,6 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  // Used for canonical URLs, sitemap and JSON-LD. Update if the final domain differs.
-  site: 'https://kit-learning.com',
+  // Canonical URL (www is primary; apex redirects to it). Used for canonical tags & JSON-LD.
+  site: 'https://www.kit-learning.com',
 });
