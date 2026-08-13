@@ -14,6 +14,7 @@ import teacherOlga from "../assets/images/teachers/teacher_olga_belskaya.jpg";
 import statIcon1 from "../assets/images/icons/icon_graduation_cap.png";
 import statIcon2 from "../assets/images/icons/icon_brainstorming.png";
 import statIcon3 from "../assets/images/icons/icon_teaching.png";
+import neurostartImg from "../assets/images/neurostart/neurostart_sensory_math.jpg";
 // Weekday-programme thumbnails
 import pgPlaycamp from "../assets/images/programs/program_playcamp_wunderkind_3_5.jpg";
 import pgReading from "../assets/images/programs/program_russian_language_grades_1_5.jpg";
@@ -24,6 +25,11 @@ import pgParent from "../assets/images/programs/program_parent_child_class.jpg";
 
 const WA =
   "https://wa.me/6580745012?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%20%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D1%8F%20%D0%B2%20KIT";
+
+// Tailored pre-fill for the NeuroStart CTA
+const NEUROSTART_WA = `https://wa.me/6580745012?text=${encodeURIComponent(
+  "Здравствуйте! Хочу узнать про программу НейроСтарт в KIT",
+)}`;
 
 const stats = [
   { icon: statIcon1, value: "100+", label: "учеников" },
@@ -188,6 +194,38 @@ const reviews = [
           <span>Подбираем темп и формат под уровень и возраст ребёнка.</span>
         </li>
       </ul>
+    </div>
+  </section>
+
+  <!-- ===== NeuroStart spotlight (new programme) ===== -->
+  <section class="spotlight">
+    <div class="container spotlight-inner">
+      <div class="spotlight-media">
+        <Image src={neurostartImg} alt="Программа НейроСтарт — развитие детей от 2 лет" width={560} class="spotlight-img" />
+        <span class="spotlight-badge">Новинка</span>
+      </div>
+      <div class="spotlight-copy">
+        <span class="eyebrow">Новая программа · от 2 лет</span>
+        <h2>НейроСтарт — комплексное развитие с 2 лет</h2>
+        <p class="lead">
+          Утренние занятия для малышей и дошкольников: интеллект, нейрогимнастика,
+          творчество и движение — в одном дне. Три формата языковой среды:
+          русский, английский и билингвальный.
+        </p>
+        <ul class="spotlight-chips">
+          <li>Интеллект</li>
+          <li>Нейроподход</li>
+          <li>Творчество</li>
+          <li>Здоровье</li>
+        </ul>
+        <p class="meta-line">По будням, утром с 9:00 · небольшие группы</p>
+        <div class="hero-cta">
+          <a class="btn btn-wa" href={NEUROSTART_WA} target="_blank" rel="noopener" data-cta="whatsapp-neurostart">
+            Записаться в НейроСтарт
+          </a>
+          <a class="btn btn-ghost" href="/neurostart">Подробнее о НейроСтарт →</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -557,6 +595,57 @@ const reviews = [
   .mission-points span {
     color: var(--muted);
     font-size: 0.98rem;
+  }
+
+  /* ===== NeuroStart spotlight ===== */
+  .spotlight {
+    background: linear-gradient(135deg, var(--accent-soft), var(--brand-soft));
+  }
+  .spotlight-inner {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    align-items: center;
+  }
+  .spotlight-media {
+    position: relative;
+  }
+  .spotlight-img {
+    width: 100%;
+    border-radius: 22px;
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+  }
+  .spotlight-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+  }
+  .spotlight-chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+  .spotlight-chips li {
+    background: #fff;
+    color: var(--brand-dark);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
   }
 
   /* ===== Flagship programmes ===== */

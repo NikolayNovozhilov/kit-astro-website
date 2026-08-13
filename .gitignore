@@ -19,3 +19,7 @@ pnpm-debug.log*
 
 # Astro
 .astro/
+
+# Local-only folder for sharing draft content (emails, source images) with Claude.
+# Not part of the site — usable photos get copied into src/assets/images/.
+claude content drafts/

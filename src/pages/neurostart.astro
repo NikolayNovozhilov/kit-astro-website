@@ -1,0 +1,373 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import heroImg from "../assets/images/neurostart/neurostart_class_group.jpg";
+import sideImg from "../assets/images/neurostart/neurostart_sensory_math.jpg";
+import ageImg from "../assets/images/neurostart/neurostart_water_play.jpg";
+
+// Tailored WhatsApp pre-fill for this program
+const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
+  "Здравствуйте! Хочу узнать про программу НейроСтарт в KIT",
+)}`;
+
+const pillars = [
+  {
+    title: "Интеллект",
+    text: "Развитие речи, чтение и письмо, математика, логика и знакомство с окружающим миром.",
+  },
+  {
+    title: "Нейроподход и тело",
+    text: "Нейрогимнастика, пальчиковая и дыхательная гимнастика, крупная и мелкая моторика, спорт.",
+  },
+  {
+    title: "Творчество",
+    text: "Музыкальные занятия и арт-мастерские для эстетического развития.",
+  },
+  {
+    title: "Здоровье",
+    text: "Активные игры и прогулки на свежем воздухе каждый день.",
+  },
+];
+
+const ageGroups = [
+  {
+    title: "Группа 2–4 года",
+    text: "Бережная адаптация, развитие речи, сенсорики и моторики. Учимся общаться, дружить и познавать мир через игру и мягкое знакомство с языками.",
+  },
+  {
+    title: "Группа 4–6 лет",
+    text: "Эффективная подготовка к школьному обучению, расширение кругозора, углублённое развитие логики, памяти и языковых навыков.",
+  },
+];
+
+const formats = [
+  { title: "Русскоязычный", text: "Полное погружение в русскоязычную среду." },
+  { title: "Англоязычный", text: "Занятия и общение на английском языке." },
+  {
+    title: "Билингвальный",
+    text: "Мягкое и естественное освоение двух языков параллельно.",
+  },
+];
+---
+
+<Layout
+  title="НейроСтарт — раннее развитие детей от 2 лет в Сингапуре | KIT"
+  description="НейроСтарт — комплексная программа утренних занятий для малышей и дошкольников от 2 лет в Сингапуре: интеллект, нейрогимнастика, творчество и здоровье. Русский, английский и билингвальный форматы."
+>
+  <!-- ===== Hero ===== -->
+  <section class="ns-hero">
+    <div class="container ns-hero-inner">
+      <div class="ns-hero-copy">
+        <span class="eyebrow">Новая программа · для детей 2–6 лет</span>
+        <h1>НейроСтарт — <span class="hl">комплексное развитие с 2 лет</span></h1>
+        <p class="lead">
+          Утренние занятия для малышей и дошкольников, где академическая база и
+          нейроподход соединяются с движением, творчеством и радостью открытий.
+          Главный принцип обучения — через игру.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-neurostart-hero">
+            <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"
+              ><path
+                fill="currentColor"
+                d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2"
+              ></path></svg
+            >
+            <span>Записаться в НейроСтарт</span>
+          </a>
+          <a class="btn btn-ghost" href="/#contact">Как нас найти</a>
+        </div>
+        <p class="ns-note">По будням, утром с 9:00 · небольшие группы</p>
+      </div>
+      <div class="ns-hero-media">
+        <Image
+          src={heroImg}
+          alt="Занятия для малышей по программе НейроСтарт в KIT"
+          width={1000}
+          loading="eager"
+          fetchpriority="high"
+          class="ns-hero-img"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== What it is ===== -->
+  <section class="ns-intro">
+    <div class="container section-head center">
+      <h2>Пространство, где ребёнок развивается гармонично</h2>
+      <p class="lead" style="margin-inline:auto">
+        Мы создали программу с учётом возрастных и нейрофизиологических
+        особенностей малышей и дошкольников. Комплексная методика охватывает все
+        ключевые сферы развития ребёнка — в одном дне, без спешки и перегрузок.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Age groups ===== -->
+  <section class="ns-ages">
+    <div class="container ns-ages-inner">
+      <div class="ns-ages-media">
+        <Image src={ageImg} alt="Сенсорное занятие в программе НейроСтарт" width={560} class="ns-ages-img" />
+      </div>
+      <div>
+        <span class="eyebrow">Две возрастные группы</span>
+        <h2>Свой подход к каждому возрасту</h2>
+        <div class="ns-ages-cards">
+          {
+            ageGroups.map((g) => (
+              <div class="ns-card">
+                <h3>{g.title}</h3>
+                <p>{g.text}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Pillars ===== -->
+  <section class="ns-pillars">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Методика</span>
+        <h2>Что входит в программу</h2>
+      </div>
+      <div class="ns-grid">
+        {
+          pillars.map((p) => (
+            <div class="ns-card">
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Language formats ===== -->
+  <section class="ns-formats">
+    <div class="container ns-formats-inner">
+      <div class="ns-formats-media">
+        <Image src={sideImg} alt="Дети на занятиях в KIT" width={560} class="ns-side-img" />
+      </div>
+      <div>
+        <span class="eyebrow">🌍 Языковая среда</span>
+        <h2>3 формата на выбор</h2>
+        <ul class="ns-formats-list">
+          {
+            formats.map((f) => (
+              <li>
+                <strong>{f.title}</strong>
+                <span>{f.text}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Organisation / CTA ===== -->
+  <section class="ns-cta">
+    <div class="container ns-cta-inner">
+      <h2>Организационная информация</h2>
+      <ul class="ns-org">
+        <li><strong>Когда:</strong> по будням, гибкий график</li>
+        <li><strong>Время:</strong> утром, с 9:00</li>
+        <li><strong>Возраст:</strong> две группы — 2–4 и 4–6 лет</li>
+        <li><strong>Группы:</strong> небольшие — максимум внимания каждому ребёнку</li>
+      </ul>
+      <p class="ns-urgency">
+        Количество мест ограничено. Успейте зафиксировать место за вашим
+        ребёнком — напишите нам, расскажем про расписание, стоимость и подберём
+        удобный формат.
+      </p>
+      <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-neurostart-cta">
+        <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"
+          ><path
+            fill="currentColor"
+            d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2"
+          ></path></svg
+        >
+        <span>Записаться в НейроСтарт</span>
+      </a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .ns-hero {
+    background: radial-gradient(
+        1200px 500px at 80% -10%,
+        var(--accent-soft),
+        transparent 60%
+      ),
+      linear-gradient(180deg, var(--cream), #fff);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .ns-hero-inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .ns-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+  }
+  .ns-hero h1 .hl {
+    color: var(--accent);
+  }
+  .ns-hero .lead {
+    font-size: 1.25rem;
+    color: var(--ink);
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin: 1.6rem 0 1rem;
+  }
+  .ns-note {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin: 0;
+    font-weight: 700;
+  }
+  .ns-hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+  }
+
+  .ns-ages-inner {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .ns-ages-img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    aspect-ratio: 3 / 4;
+  }
+  .ns-ages-cards {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .ns-pillars {
+    background: linear-gradient(180deg, #fff, var(--cream));
+  }
+  .ns-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.3rem;
+  }
+  .ns-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  .ns-card h3 {
+    color: var(--brand-dark);
+  }
+  .ns-card p {
+    color: var(--muted);
+    margin: 0;
+    font-size: 0.98rem;
+  }
+
+  .ns-formats {
+    background: var(--brand-soft);
+  }
+  .ns-formats-inner {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .ns-side-img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+  }
+  .ns-formats-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .ns-formats-list li {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 1rem 1.3rem;
+    box-shadow: var(--shadow);
+  }
+  .ns-formats-list strong {
+    display: block;
+    color: var(--brand-dark);
+    margin-bottom: 0.15rem;
+  }
+  .ns-formats-list span {
+    color: var(--muted);
+    font-size: 0.98rem;
+  }
+
+  .ns-cta-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .ns-org {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem auto;
+    display: inline-grid;
+    gap: 0.6rem;
+    text-align: left;
+  }
+  .ns-org strong {
+    color: var(--ink);
+  }
+  .ns-org li {
+    color: var(--muted);
+  }
+  .ns-urgency {
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .ns-hero-inner,
+    .ns-ages-inner,
+    .ns-formats-inner {
+      grid-template-columns: 1fr;
+    }
+    .ns-hero-media {
+      order: -1;
+    }
+    .ns-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .ns-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -49,12 +49,14 @@ const jsonLd = {
   ],
 };
 
+// Absolute (with leading "/") so they jump to the homepage section from any page,
+// including subpages like /neurostart. On the homepage they still scroll in-page.
 const nav = [
-  { href: "#programs", label: "Программы" },
-  { href: "#other-programs", label: "Расписание" },
-  { href: "#teachers", label: "Преподаватели" },
-  { href: "#reviews", label: "Отзывы" },
-  { href: "#contact", label: "Контакты" },
+  { href: "/#programs", label: "Программы" },
+  { href: "/#other-programs", label: "Расписание" },
+  { href: "/#teachers", label: "Преподаватели" },
+  { href: "/#reviews", label: "Отзывы" },
+  { href: "/#contact", label: "Контакты" },
 ];
 ---
 
@@ -143,7 +145,7 @@ const nav = [
 
     <header class="site-header">
       <div class="container header-inner">
-        <a href="#top" class="brand" aria-label="KIT Learning — на главную">
+        <a href="/#top" class="brand" aria-label="KIT Learning — на главную">
           <Image
             src={logo}
             alt="KIT Learning"
@@ -277,7 +279,21 @@ const nav = [
           toggle?.setAttribute("aria-expanded", "false");
         }),
       );
-    </script>
+
+      // Cross-page anchor links (e.g. /#teachers from /neurostart): browsers with
+      // scroll-behavior:smooth sometimes skip the jump on load. Force it, instantly.
+      window.addEventListener("load", () => {
+        const id = decodeURIComponent(location.hash.slice(1));
+        if (!id) return;
+        const el = document.getElementById(id);
+        if (!el) return;
+        const root = document.documentElement;
+        const prev = root.style.scrollBehavior;
+        root.style.scrollBehavior = "auto";
+        el.scrollIntoView();
+        root.style.scrollBehavior = prev;
+      });
+</script>
 
     <style is:global>
       :root {
