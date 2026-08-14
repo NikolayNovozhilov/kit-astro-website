@@ -345,6 +345,30 @@ const reviews = [
     </div>
   </section>
 
+  <!-- ===== Exam prep (IB / IGCSE) ===== -->
+  <section class="exams" id="exams">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Старшие классы</span>
+        <h2>Подготовка к международным экзаменам по русскому</h2>
+        <p class="lead" style="margin-inline:auto">
+          Более 10 лет готовим студентов к IB и IGCSE по русскому языку —
+          индивидуально, под уровень и цели ребёнка.
+        </p>
+      </div>
+      <div class="exam-links">
+        <a class="exam-link-card" href="/ib-russian">
+          <h3>Подготовка к IB →</h3>
+          <p>Russian A: Literature, Language &amp; Literature, Russian B (SL/HL) и MYP.</p>
+        </a>
+        <a class="exam-link-card" href="/igcse-russian">
+          <h3>Подготовка к IGCSE →</h3>
+          <p>Russian First, Second и Foreign Language.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== Camps teaser ===== -->
   <section class="camps" id="camps">
     <div class="container camps-inner">
@@ -758,6 +782,37 @@ const reviews = [
     font-weight: 700;
     color: var(--brand-dark);
     max-width: 34rem;
+  }
+
+  /* ===== Exam prep ===== */
+  .exams {
+    background: linear-gradient(180deg, var(--cream), #fff);
+  }
+  .exam-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+  }
+  .exam-link-card {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.6rem 1.8rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .exam-link-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--brand);
+    text-decoration: none;
+  }
+  .exam-link-card h3 {
+    color: var(--brand-dark);
+  }
+  .exam-link-card p {
+    color: var(--muted);
+    margin: 0;
   }
 
   /* ===== Camps ===== */

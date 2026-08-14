@@ -1,0 +1,277 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
+  "Здравствуйте! Хочу узнать про подготовку к IGCSE по русскому языку в KIT",
+)}`;
+
+const directions = [
+  { name: "IGCSE Russian", level: "First Language" },
+  { name: "IGCSE Russian", level: "Second Language" },
+  { name: "IGCSE Russian", level: "Foreign Language" },
+];
+
+const schools = [
+  "Ведущие международные школы в Сингапуре",
+  "Международные школы в Европе",
+  "Частные и международные школы в ОАЭ",
+  "и другие учебные заведения по всему миру",
+];
+
+const steps = [
+  "Проведём объективную диагностику текущего уровня студента.",
+  "Подберём оптимальный формат и уровень экзаменационной программы.",
+  "Разберём все сложные разделы экзамена — лексику, грамматику, письменные работы и понимание текстов.",
+];
+---
+
+<Layout
+  title="Подготовка к IGCSE по русскому языку в Сингапуре | KIT"
+  description="Готовим к экзаменам IGCSE Russian: First Language, Second Language, Foreign Language. Более 10 лет опыта, индивидуальные программы, высокие баллы."
+>
+  <!-- Hero -->
+  <section class="exam-hero">
+    <div class="container">
+      <span class="eyebrow">Международные экзамены · более 10 лет опыта</span>
+      <h1>Подготовка к IGCSE по русскому языку</h1>
+      <p class="lead">
+        Наша команда более 10 лет готовит студентов к экзаменам IGCSE по русскому
+        языку — First, Second и Foreign Language. Мы подберём формат под уровень
+        ребёнка, методично закроем пробелы и доведём подготовку до уверенных
+        высших баллов.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-igcse">
+          Записаться на консультацию
+        </a>
+        <a class="btn btn-ghost" href="/#contact">Как нас найти</a>
+      </div>
+      <ul class="trust-chips">
+        <li>10+ лет опыта</li>
+        <li>Индивидуальная программа</li>
+        <li>First / Second / Foreign</li>
+        <li>Высшие баллы</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Directions -->
+  <section class="exam-section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Направления подготовки</span>
+        <h2>Уровни экзамена IGCSE Russian</h2>
+      </div>
+      <div class="exam-grid exam-grid-3">
+        {
+          directions.map((d) => (
+            <div class="exam-card">
+              <h3>{d.name}</h3>
+              <p>{d.level}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Schools -->
+  <section class="exam-schools">
+    <div class="container section-head center">
+      <span class="eyebrow">Нам доверяют</span>
+      <h2>С какими школами мы работаем</h2>
+      <p class="lead" style="margin-inline:auto">
+        Нам доверяют семьи из ведущих международных и частных школ по всему миру,
+        включая:
+      </p>
+      <ul class="school-list">
+        {schools.map((s) => <li>{s}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- When to start -->
+  <section class="exam-when">
+    <div class="container exam-when-inner">
+      <div>
+        <span class="eyebrow">Когда начинать</span>
+        <h2>Рекомендуем начать за 2–3 года до экзамена</h2>
+        <p class="lead">
+          Лучше всего обратиться к нам за 2–3 года до экзамена — на старте цикла
+          подготовки к IGCSE в средней школе. Так мы успеваем:
+        </p>
+      </div>
+      <ol class="steps">
+        {steps.map((s) => <li>{s}</li>)}
+      </ol>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="exam-cta">
+    <div class="container exam-cta-inner">
+      <h2>Сохраните русский язык в жизни вашего студента</h2>
+      <p>
+        Напишите нам — подробно расскажем про форматы занятий, уровни экзамена и
+        график тестирования, составим индивидуальный план подготовки.
+      </p>
+      <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-igcse-cta">
+        Написать в WhatsApp
+      </a>
+      <p class="cross-link">
+        Готовитесь к IB? →
+        <a href="/ib-russian">Подготовка к IB по русскому языку и литературе</a>
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .exam-hero {
+    background: radial-gradient(
+        1200px 500px at 80% -10%,
+        var(--brand-soft),
+        transparent 60%
+      ),
+      linear-gradient(180deg, var(--cream), #fff);
+    padding: clamp(3rem, 6vw, 5rem) 0 clamp(2.5rem, 5vw, 4rem);
+  }
+  .exam-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.1rem);
+    font-weight: 900;
+    max-width: 20ch;
+  }
+  .exam-hero .lead {
+    max-width: 52ch;
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin: 1.6rem 0;
+  }
+  .trust-chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 0;
+    margin: 0;
+  }
+  .trust-chips li {
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--brand-dark);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+  }
+
+  .exam-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.3rem;
+  }
+  .exam-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .exam-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  .exam-card h3 {
+    color: var(--brand-dark);
+    margin-bottom: 0.3rem;
+  }
+  .exam-card p {
+    color: var(--muted);
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .exam-schools {
+    background: var(--accent-soft);
+  }
+  .school-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem auto 0;
+    max-width: 40rem;
+    display: grid;
+    gap: 0.7rem;
+    text-align: left;
+  }
+  .school-list li {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 0.9rem 1.3rem;
+    box-shadow: var(--shadow);
+    font-weight: 700;
+  }
+  .school-list li::before {
+    content: "✓";
+    color: var(--accent);
+    font-weight: 900;
+    margin-right: 0.6rem;
+  }
+
+  .exam-when-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .steps {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 1rem;
+  }
+  .steps li {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.3rem;
+    box-shadow: var(--shadow);
+    color: var(--ink);
+  }
+
+  .exam-cta {
+    background: var(--brand-dark);
+    color: #eaf5f3;
+  }
+  .exam-cta-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .exam-cta h2 {
+    color: #fff;
+  }
+  .exam-cta .btn {
+    margin-top: 0.5rem;
+  }
+  .cross-link {
+    margin-top: 1.6rem;
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+  .cross-link a {
+    color: #fff;
+    font-weight: 800;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 760px) {
+    .exam-grid,
+    .exam-grid-3,
+    .exam-when-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
