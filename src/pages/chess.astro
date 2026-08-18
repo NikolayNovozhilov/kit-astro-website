@@ -1,0 +1,307 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import heroImg from "../assets/images/programs/program_chess_class.jpg";
+import coachImg from "../assets/images/teachers/teacher_valeriia_lovetskaia_chess.jpeg";
+
+const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
+  "Здравствуйте! Хочу узнать про шахматы для детей в KIT",
+)}`;
+
+const groups = [
+  {
+    badge: "Для начинающих",
+    age: "от 4 лет",
+    tagline: "Учимся мыслить",
+    schedule: "Воскресенье · 12:40–13:40",
+    skills: ["Логика", "Внимание", "Стратегия", "Друзья"],
+  },
+  {
+    badge: "Для играющих",
+    age: "11–14 лет",
+    tagline: "Развиваем мастерство",
+    schedule: "Воскресенье · 12:40–14:40",
+    skills: ["Турниры", "Дебюты", "Эндшпили", "Анализ"],
+  },
+];
+---
+
+<Layout
+  title="Шахматы для детей в Сингапуре — шахматная школа KIT"
+  description="Шахматная школа для детей в Сингапуре: группы для начинающих (от 4 лет) и играющих (11–14 лет). Логика, стратегия, турниры. Занятия по воскресеньям с опытным тренером."
+>
+  <!-- Hero -->
+  <section class="chess-hero">
+    <div class="container chess-hero-inner">
+      <div>
+        <span class="eyebrow">Шахматная школа · от 4 лет</span>
+        <h1>Шахматы для детей в Сингапуре</h1>
+        <p class="lead">
+          Учим детей думать наперёд: логика, внимание и стратегия — через игру и
+          удовольствие. Две группы: для тех, кто только начинает, и для тех, кто
+          уже играет и хочет расти.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-chess">
+            Записаться на шахматы
+          </a>
+          <a class="btn btn-ghost" href="/#contact">Как нас найти</a>
+        </div>
+      </div>
+      <div class="chess-hero-media">
+        <Image
+          src={heroImg}
+          alt="Занятия по шахматам для детей в KIT"
+          width={1000}
+          loading="eager"
+          fetchpriority="high"
+          class="chess-hero-img"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Groups -->
+  <section class="chess-groups">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Две группы</span>
+        <h2>Занятия под уровень ребёнка</h2>
+      </div>
+      <div class="chess-grid">
+        {
+          groups.map((g) => (
+            <article class="chess-card">
+              <span class="chess-badge">{g.badge}</span>
+              <h3>
+                {g.tagline}
+                <span class="chess-age">{g.age}</span>
+              </h3>
+              <p class="chess-schedule">🕐 {g.schedule}</p>
+              <ul class="chess-skills">
+                {g.skills.map((s) => (
+                  <li>{s}</li>
+                ))}
+              </ul>
+              <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-chess-group">
+                Записаться
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Coach -->
+  <section class="chess-coach">
+    <div class="container chess-coach-inner">
+      <div class="chess-coach-photo-wrap">
+        <Image src={coachImg} alt="Валерия Ловецкая — тренер по шахматам" width={640} class="chess-coach-photo" />
+      </div>
+      <div>
+        <span class="eyebrow">Тренер</span>
+        <h2>Валерия Ловецкая</h2>
+        <p class="lead">
+          Капитан женской сборной по шахматам Singapore Polytechnic. Более 6 лет
+          преподаёт шахматы детям от 4 до 16 лет.
+        </p>
+        <ul class="coach-facts">
+          <li>Играет в шахматы с 10 лет</li>
+          <li>Участница 48 официальных турниров FIDE</li>
+          <li>2-е место в полуфинале чемпионата Москвы</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="chess-cta">
+    <div class="container chess-cta-inner">
+      <h2>Запись открыта</h2>
+      <p>
+        Напишите нам — расскажем про ближайший старт групп, актуальное расписание
+        и подберём подходящий уровень для вашего ребёнка.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .chess-hero {
+    background: radial-gradient(
+        1200px 500px at 80% -10%,
+        var(--brand-soft),
+        transparent 60%
+      ),
+      linear-gradient(180deg, var(--cream), #fff);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .chess-hero-inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .chess-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+  }
+  .chess-hero-img {
+    width: 100%;
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.6rem;
+  }
+
+  .chess-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+  }
+  .chess-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.6rem 1.8rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .chess-badge {
+    align-self: flex-start;
+    background: var(--brand-soft);
+    color: var(--brand-dark);
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    margin-bottom: 0.9rem;
+  }
+  .chess-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .chess-age {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .chess-schedule {
+    color: var(--brand-dark);
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+  }
+  .chess-skills {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chess-skills li {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+  }
+  .chess-card .btn-sm {
+    align-self: flex-start;
+    margin-top: auto;
+  }
+
+  .chess-coach {
+    background: var(--brand-soft);
+  }
+  .chess-coach-inner {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .chess-coach-photo-wrap {
+    width: 260px;
+    height: 260px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 6px solid #fff;
+    box-shadow: var(--shadow-lg);
+  }
+  .chess-coach-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Full-body source: frame on the face (upper-centre) */
+    object-position: 50% 14%;
+    transform: scale(1.45);
+    transform-origin: 50% 14%;
+    display: block;
+  }
+  .coach-facts {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .coach-facts li {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 0.8rem 1.2rem;
+    box-shadow: var(--shadow);
+    font-weight: 700;
+  }
+  .coach-facts li::before {
+    content: "♟";
+    margin-right: 0.6rem;
+    color: var(--brand);
+  }
+
+  .chess-cta {
+    background: var(--brand-dark);
+    color: #eaf5f3;
+  }
+  .chess-cta-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .chess-cta h2 {
+    color: #fff;
+  }
+  .chess-cta .btn {
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 820px) {
+    .chess-hero-inner,
+    .chess-grid,
+    .chess-coach-inner {
+      grid-template-columns: 1fr;
+    }
+    .chess-hero-media {
+      order: -1;
+    }
+    .chess-coach-inner {
+      text-align: center;
+    }
+    .coach-facts {
+      text-align: left;
+    }
+  }
+</style>
