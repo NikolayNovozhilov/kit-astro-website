@@ -1,0 +1,70 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const WA =
+  "https://wa.me/6580745012?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%20%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D1%8F%20%D0%B2%20KIT";
+---
+
+<Layout
+  title="Страница не найдена — KIT"
+  description="Страница не найдена. Вернитесь на главную или напишите нам в WhatsApp."
+>
+  <section class="notfound">
+    <div class="container notfound-inner">
+      <span class="nf-code">404</span>
+      <h1>Страница не найдена</h1>
+      <p class="lead">
+        Возможно, ссылка устарела или страница переехала. Вернитесь на главную —
+        или просто напишите нам, и мы поможем.
+      </p>
+      <div class="nf-cta">
+        <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-404">
+          Написать в WhatsApp
+        </a>
+        <a class="btn btn-ghost" href="/">На главную</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .notfound {
+    background: radial-gradient(
+        1000px 400px at 50% -10%,
+        var(--brand-soft),
+        transparent 60%
+      ),
+      linear-gradient(180deg, var(--cream), #fff);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+  .notfound-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+  .nf-code {
+    display: block;
+    font-size: clamp(4rem, 14vw, 8rem);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--brand);
+    letter-spacing: -0.03em;
+  }
+  .notfound h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    margin-top: 0.5rem;
+  }
+  .notfound .lead {
+    margin-inline: auto;
+  }
+  .nf-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    margin-top: 1.6rem;
+  }
+</style>
