@@ -293,6 +293,19 @@ const nav = [
         el.scrollIntoView();
         root.style.scrollBehavior = prev;
       });
+
+      // Send a GA4 event whenever a WhatsApp CTA is clicked (the primary conversion).
+      // Mark "whatsapp_click" as a Key Event in GA4. cta_location tells you which
+      // button/page drove it (e.g. whatsapp-hero, whatsapp-chess, whatsapp-sticky).
+      document.querySelectorAll('a[data-cta^="whatsapp"]').forEach((a) =>
+        a.addEventListener("click", () => {
+          if (typeof window.gtag === "function") {
+            window.gtag("event", "whatsapp_click", {
+              cta_location: a.getAttribute("data-cta"),
+            });
+          }
+        }),
+      );
 </script>
 
     <style is:global>
