@@ -1,0 +1,262 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
+  "Здравствуйте! Хочу узнать про расписание и свободные места в KIT",
+)}`;
+
+// ---- Single source of truth: the Google Sheet, read live as CSV ----
+// Anyone-with-link (Viewer) sharing is enough for this public export endpoint.
+// This runs at build time (and on every request in `astro dev`), in Node —
+// so there are no browser CORS issues.
+const SHEET_ID = "1ta5lSAKOVQ4CSLBCGv5ouJPSCtLynaVaDavjmtB1w6E";
+const SHEET_CSV = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+
+const DAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]; // sheet columns D–J
+
+type Slot = { day: string; time: string };
+type Group = { title: string; subtitle: string; age: string; duration: string; slots: Slot[] };
+
+// Minimal RFC-4180-ish CSV parser (handles quotes, escaped quotes, embedded newlines).
+function parseCSV(text: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = "";
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else inQuotes = false;
+      } else field += c;
+    } else if (c === '"') inQuotes = true;
+    else if (c === ",") { row.push(field); field = ""; }
+    else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+    else if (c !== "\r") field += c;
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+// Cosmetic tidy: pad single-digit minutes (14:0 → 14:00) and use an en-dash.
+function cleanTime(raw: string): string {
+  return raw
+    .trim()
+    .replace(/(\d{1,2}):(\d{1,2})/g, (_m, h, mm) => `${h}:${mm.padStart(2, "0")}`)
+    .replace(/\s*[-–—]\s*/g, "–");
+}
+
+function isRealSlot(v: string): boolean {
+  const t = v.trim();
+  return t !== "" && t !== "?" && /\d/.test(t);
+}
+
+let groups: Group[] = [];
+let loadError = false;
+
+try {
+  const res = await fetch(SHEET_CSV, { signal: AbortSignal.timeout(8000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const rows = parseCSV(await res.text());
+
+  const headerIdx = rows.findIndex((r) => (r[0] ?? "").trim() === "Группа");
+  const dataRows = headerIdx >= 0 ? rows.slice(headerIdx + 1) : [];
+
+  for (const r of dataRows) {
+    const name = (r[0] ?? "").trim();
+    if (!name) continue; // stop-gap for trailing empty rows / spacers
+    const [en, ru] = name.split("/").map((s) => s.trim());
+    const slots: Slot[] = [];
+    for (let i = 0; i < DAYS.length; i++) {
+      const cell = r[3 + i] ?? "";
+      if (isRealSlot(cell)) slots.push({ day: DAYS[i], time: cleanTime(cell) });
+    }
+    groups.push({
+      title: ru || en,
+      subtitle: ru ? en : "",
+      age: (r[1] ?? "").trim(),
+      duration: (r[2] ?? "").trim(),
+      slots,
+    });
+  }
+} catch (e) {
+  loadError = true;
+}
+
+const updated = new Date().toLocaleDateString("ru-RU", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+---
+
+<Layout
+  title="Расписание занятий — KIT, школа русского языка в Сингапуре"
+  description="Расписание групп KIT: субботняя и воскресная школа, русский язык, НейроСтарт, адаптационные группы, шахматы, китайский. Новые группы открываем под запрос."
+>
+  <section class="sch-hero">
+    <div class="container">
+      <span class="eyebrow">Расписание · 2026–2027</span>
+      <h1>Расписание занятий</h1>
+      <p class="lead">
+        Ниже — актуальные группы и время занятий. Мы регулярно открываем новые
+        группы под запрос, поэтому если удобного слота нет — напишите нам, и мы
+        подберём или соберём группу под ваше время.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-schedule">
+          Узнать свободные места
+        </a>
+      </div>
+      <p class="sch-updated">Обновлено: {updated}</p>
+    </div>
+  </section>
+
+  <section class="sch-list">
+    <div class="container">
+      {loadError && (
+        <div class="sch-fallback">
+          <p>
+            Не удалось загрузить расписание. Напишите нам в WhatsApp — пришлём
+            актуальное расписание и подберём удобное время.
+          </p>
+          <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-schedule-fallback">
+            Написать в WhatsApp
+          </a>
+        </div>
+      )}
+
+      {!loadError && (
+        <div class="sch-grid">
+          {groups.map((g) => (
+            <article class="sch-card">
+              <header class="sch-card-head">
+                <h2>{g.title}</h2>
+                {g.subtitle && <p class="sch-sub">{g.subtitle}</p>}
+              </header>
+              <ul class="sch-meta">
+                {g.age && <li><span>Возраст</span>{g.age}</li>}
+                {g.duration && <li><span>Длительность</span>{g.duration}</li>}
+              </ul>
+              {g.slots.length > 0 ? (
+                <ul class="sch-slots">
+                  {g.slots.map((s) => (
+                    <li class="sch-slot">
+                      <span class="sch-day">{s.day}</span>
+                      <span class="sch-time">{s.time}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p class="sch-tbd">Время уточняется — спросите в WhatsApp</p>
+              )}
+            </article>
+          ))}
+        </div>
+      )}
+
+      <p class="sch-note">
+        Время и состав групп могут меняться. Точное расписание и наличие мест
+        подтверждаем в <a href={WA} target="_blank" rel="noopener" data-cta="whatsapp-schedule-note">WhatsApp</a>.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .sch-hero {
+    padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(1.5rem, 4vw, 2.5rem);
+    background: linear-gradient(180deg, var(--brand-soft), var(--cream));
+  }
+  .sch-hero .lead { margin-top: 0.5rem; }
+  .hero-cta { margin: 1.6rem 0 0.5rem; display: flex; flex-wrap: wrap; gap: 0.8rem; }
+  .sch-updated { color: var(--muted); font-size: 0.9rem; margin: 0.6rem 0 0; }
+
+  .sch-list { padding-top: clamp(2rem, 5vw, 3rem); }
+  .sch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+  }
+  .sch-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.4rem 1.2rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .sch-card-head h2 {
+    font-size: 1.18rem;
+    margin: 0 0 0.15rem;
+  }
+  .sch-sub { color: var(--muted); font-size: 0.85rem; margin: 0 0 0.4rem; }
+
+  .sch-meta {
+    list-style: none;
+    padding: 0;
+    margin: 0.6rem 0 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+  }
+  .sch-meta li { font-weight: 700; font-size: 0.95rem; }
+  .sch-meta span {
+    display: block;
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+
+  .sch-slots {
+    list-style: none;
+    padding: 0;
+    margin: auto 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    border-top: 1px solid var(--line);
+    padding-top: 0.9rem;
+  }
+  .sch-slot {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .sch-day {
+    flex: none;
+    width: 2.4rem;
+    text-align: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--brand-dark);
+    background: var(--brand-soft);
+    border-radius: 999px;
+    padding: 0.25rem 0;
+  }
+  .sch-time { font-weight: 700; }
+  .sch-tbd {
+    margin: auto 0 0;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .sch-note {
+    margin-top: 2rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .sch-fallback {
+    background: var(--accent-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.6rem;
+    text-align: center;
+  }
+</style>
