@@ -51,9 +51,25 @@ const jsonLd = {
 
 // Absolute (with leading "/") so they jump to the homepage section from any page,
 // including subpages like /neurostart. On the homepage they still scroll in-page.
+// Some items open a dropdown (children); the rest are plain links.
 const nav = [
-  { href: "/#programs", label: "Программы" },
-  { href: "/#other-programs", label: "Расписание" },
+  {
+    label: "Программы",
+    children: [
+      { href: "/#programs", label: "Обзор программ" },
+      { href: "/neurostart", label: "НейроСтарт" },
+      { href: "/chess", label: "Шахматы" },
+      { href: "/ib-russian", label: "Русский на IB" },
+      { href: "/igcse-russian", label: "Русский на IGCSE" },
+    ],
+  },
+  {
+    label: "Расписание",
+    children: [
+      { href: "/schedule", label: "Расписание занятий" },
+      { href: "/calendar", label: "Календарь 2026–2027" },
+    ],
+  },
   { href: "/teachers", label: "Преподаватели" },
   { href: "/#reviews", label: "Отзывы" },
   { href: "/#contact", label: "Контакты" },
@@ -156,7 +172,30 @@ const nav = [
         </a>
 
         <nav class="main-nav" aria-label="Основная навигация">
-          {nav.map((i) => <a href={i.href}>{i.label}</a>)}
+          {nav.map((i) =>
+            i.children ? (
+              <div class="nav-item has-submenu">
+                <button
+                  class="nav-trigger"
+                  type="button"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                >
+                  {i.label}
+                  <svg class="nav-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="currentColor" d="M7 10l5 5 5-5z" />
+                  </svg>
+                </button>
+                <div class="submenu">
+                  {i.children.map((c) => <a href={c.href}>{c.label}</a>)}
+                </div>
+              </div>
+            ) : (
+              <a class="nav-item nav-link" href={i.href}>
+                {i.label}
+              </a>
+            ),
+          )}
         </nav>
 
         <div class="header-actions">
@@ -279,6 +318,31 @@ const nav = [
           toggle?.setAttribute("aria-expanded", "false");
         }),
       );
+
+      // Nav dropdowns: click toggles (mobile + keyboard); hover handles desktop.
+      function closeSubmenus(except) {
+        document.querySelectorAll(".nav-item.open").forEach((o) => {
+          if (o === except) return;
+          o.classList.remove("open");
+          o.querySelector(".nav-trigger")?.setAttribute("aria-expanded", "false");
+        });
+      }
+      document.querySelectorAll(".nav-trigger").forEach((btn) =>
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const item = btn.closest(".nav-item");
+          const willOpen = !item.classList.contains("open");
+          closeSubmenus(item);
+          item.classList.toggle("open", willOpen);
+          btn.setAttribute("aria-expanded", String(willOpen));
+        }),
+      );
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".nav-item")) closeSubmenus();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeSubmenus();
+      });
 
       // Cross-page anchor links (e.g. /#teachers from /neurostart): browsers with
       // scroll-behavior:smooth sometimes skip the jump on load. Force it, instantly.
@@ -500,15 +564,83 @@ const nav = [
         display: flex;
         gap: 1.4rem;
         margin-left: auto;
+        align-items: center;
       }
-      .main-nav a {
+      .nav-item {
+        position: relative;
+      }
+      .main-nav > .nav-link,
+      .nav-trigger {
         color: var(--ink);
         font-weight: 700;
         font-size: 0.98rem;
+        font-family: inherit;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
       }
-      .main-nav a:hover {
+      .main-nav > .nav-link:hover,
+      .nav-trigger:hover {
         color: var(--brand);
         text-decoration: none;
+      }
+      .nav-chevron {
+        width: 0.72em;
+        height: 0.72em;
+        transition: transform 0.2s;
+      }
+      .submenu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 210px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: var(--shadow-lg);
+        padding: 0.4rem;
+        margin-top: 0.5rem;
+        display: none;
+        flex-direction: column;
+        z-index: 110;
+      }
+      .submenu::before {
+        /* invisible bridge so hover isn't lost in the gap above the menu */
+        content: "";
+        position: absolute;
+        top: -0.5rem;
+        left: 0;
+        right: 0;
+        height: 0.5rem;
+      }
+      .submenu a {
+        color: var(--ink);
+        font-weight: 700;
+        font-size: 0.95rem;
+        padding: 0.6rem 0.8rem;
+        border-radius: 8px;
+        white-space: nowrap;
+      }
+      .submenu a:hover {
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        text-decoration: none;
+      }
+      .nav-item.open .submenu {
+        display: flex;
+      }
+      .nav-item.open .nav-chevron {
+        transform: rotate(180deg);
+      }
+      @media (min-width: 901px) {
+        .nav-item.has-submenu:hover .submenu,
+        .nav-item.has-submenu:focus-within .submenu {
+          display: flex;
+        }
       }
       .header-actions {
         display: flex;
@@ -628,18 +760,45 @@ const nav = [
           inset: 72px 0 auto 0;
           flex-direction: column;
           gap: 0;
+          align-items: stretch;
           background: var(--cream);
           border-bottom: 1px solid var(--line);
-          padding: 0.5rem 0;
+          padding: 0.25rem 0 0.5rem;
           box-shadow: var(--shadow);
           display: none;
+          max-height: calc(100vh - 72px);
+          overflow-y: auto;
         }
         body.nav-open .main-nav {
           display: flex;
         }
-        .main-nav a {
+        .main-nav > .nav-link,
+        .nav-trigger {
+          width: 100%;
+          justify-content: space-between;
           padding: 0.85rem clamp(1rem, 4vw, 2rem);
           border-bottom: 1px solid var(--line);
+          font-size: 1rem;
+        }
+        .submenu {
+          position: static;
+          display: none;
+          margin: 0;
+          padding: 0;
+          min-width: 0;
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+          background: var(--brand-soft);
+        }
+        .submenu::before {
+          display: none;
+        }
+        .submenu a {
+          padding: 0.75rem clamp(1.5rem, 6vw, 2.6rem);
+          border-bottom: 1px solid var(--line);
+          border-radius: 0;
+          white-space: normal;
         }
         .header-actions .header-phone,
         .header-actions .btn span {

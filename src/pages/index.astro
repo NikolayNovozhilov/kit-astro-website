@@ -258,9 +258,12 @@ const reviews = [
               мастер-классы. Программа выстроена по возрасту — от подготовки к
               школе до средних классов.
             </p>
-            <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-weekend">
-              Узнать про запись
-            </a>
+            <div class="flagship-cta">
+              <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-weekend">
+                Узнать про запись
+              </a>
+              <a class="btn btn-ghost btn-sm" href="/schedule">Смотреть расписание →</a>
+            </div>
           </div>
         </article>
 
@@ -312,10 +315,10 @@ const reviews = [
           <h3>Школьники и подростки</h3>
           <p>
             Русский язык и литература, математика (в том числе олимпиадная),
-            наука, <a href="/chess/">шахматы</a>, искусство (включая подготовку к
-            IGCSE), программирование (Minecraft, Python), китайский разговорный
-            клуб.
+            наука, шахматы, искусство (включая подготовку к IGCSE),
+            программирование (Minecraft, Python), китайский разговорный клуб.
           </p>
+          <a class="link-arrow" href="/chess/">Подробнее о шахматах →</a>
         </div>
         <div class="cat-card">
           <h3>Индивидуально · 1&nbsp;:&nbsp;1</h3>
@@ -385,6 +388,7 @@ const reviews = [
           <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-camps">
             Спросить про следующий лагерь
           </a>
+          <a class="btn btn-ghost" href="/calendar">Даты в календаре →</a>
         </div>
       </div>
       <div class="camps-media">
@@ -419,6 +423,9 @@ const reviews = [
         }
       </div>
 
+      <div class="section-cta">
+        <a class="btn btn-ghost" href="/teachers">Все преподаватели →</a>
+      </div>
     </div>
   </section>
 
@@ -538,6 +545,17 @@ const reviews = [
     flex-wrap: wrap;
     gap: 0.8rem;
     margin: 1.6rem 0 1rem;
+  }
+  .flagship-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+  }
+  .section-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
   }
   .hero-note {
     font-size: 0.92rem;
