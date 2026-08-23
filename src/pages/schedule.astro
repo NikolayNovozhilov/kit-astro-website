@@ -2,22 +2,20 @@
 import Layout from "../layouts/Layout.astro";
 
 const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
-  "Здравствуйте! Хочу узнать про расписание и свободные места в KIT",
+  "Здравствуйте! Хочу записаться на занятия в KIT и узнать удобное время",
 )}`;
 
 // ---- Single source of truth: the Google Sheet, read live as CSV ----
 // Anyone-with-link (Viewer) sharing is enough for this public export endpoint.
-// This runs at build time (and on every request in `astro dev`), in Node —
-// so there are no browser CORS issues.
+// Runs at build time (and per request in `astro dev`), in Node — no CORS.
 const SHEET_ID = "1ta5lSAKOVQ4CSLBCGv5ouJPSCtLynaVaDavjmtB1w6E";
 const SHEET_CSV = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
 
 const DAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]; // sheet columns D–J
 
-type Slot = { day: string; time: string };
-type Group = { title: string; subtitle: string; age: string; duration: string; slots: Slot[] };
+type Program = { title: string; subtitle: string; age: string; days: string[] };
 
-// Minimal RFC-4180-ish CSV parser (handles quotes, escaped quotes, embedded newlines).
+// Minimal RFC-4180-ish CSV parser (handles quotes, escaped quotes, newlines).
 function parseCSV(text: string): string[][] {
   const rows: string[][] = [];
   let row: string[] = [];
@@ -39,20 +37,15 @@ function parseCSV(text: string): string[][] {
   return rows;
 }
 
-// Cosmetic tidy: pad single-digit minutes (14:0 → 14:00) and use an en-dash.
-function cleanTime(raw: string): string {
-  return raw
-    .trim()
-    .replace(/(\d{1,2}):(\d{1,2})/g, (_m, h, mm) => `${h}:${mm.padStart(2, "0")}`)
-    .replace(/\s*[-–—]\s*/g, "–");
+// Collapse a set of weekdays into readable chips (Пн–Пт when it's the full week).
+function formatDays(days: string[]): string[] {
+  const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт"];
+  if (weekdays.length === days.length && weekdays.every((d) => days.includes(d)))
+    return ["Пн–Пт"];
+  return days;
 }
 
-function isRealSlot(v: string): boolean {
-  const t = v.trim();
-  return t !== "" && t !== "?" && /\d/.test(t);
-}
-
-let groups: Group[] = [];
+let programs: Program[] = [];
 let loadError = false;
 
 try {
@@ -63,53 +56,53 @@ try {
   const headerIdx = rows.findIndex((r) => (r[0] ?? "").trim() === "Группа");
   const dataRows = headerIdx >= 0 ? rows.slice(headerIdx + 1) : [];
 
+  // Merge rows that are the same programme + age (e.g. NeuroStart half/full day)
+  // and keep only which days each runs — no times, no durations.
+  const byKey = new Map<string, Program>();
   for (const r of dataRows) {
     const name = (r[0] ?? "").trim();
-    if (!name) continue; // stop-gap for trailing empty rows / spacers
+    if (!name) continue;
+    const age = (r[1] ?? "").trim();
     const [en, ru] = name.split("/").map((s) => s.trim());
-    const slots: Slot[] = [];
+    const key = `${name}|${age}`;
+    const prog =
+      byKey.get(key) ?? { title: ru || en, subtitle: ru ? en : "", age, days: [] };
     for (let i = 0; i < DAYS.length; i++) {
-      const cell = r[3 + i] ?? "";
-      if (isRealSlot(cell)) slots.push({ day: DAYS[i], time: cleanTime(cell) });
+      const cell = (r[3 + i] ?? "").trim(); // any non-empty cell = runs that day
+      if (cell && !prog.days.includes(DAYS[i])) prog.days.push(DAYS[i]);
     }
-    groups.push({
-      title: ru || en,
-      subtitle: ru ? en : "",
-      age: (r[1] ?? "").trim(),
-      duration: (r[2] ?? "").trim(),
-      slots,
-    });
+    byKey.set(key, prog);
   }
+  // Keep sheet order, but sort each programme's days Mon→Sun.
+  programs = [...byKey.values()].map((p) => ({
+    ...p,
+    days: DAYS.filter((d) => p.days.includes(d)),
+  }));
 } catch (e) {
   loadError = true;
 }
-
-const updated = new Date().toLocaleDateString("ru-RU", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
 ---
 
 <Layout
-  title="Расписание занятий — KIT, школа русского языка в Сингапуре"
-  description="Расписание групп KIT: субботняя и воскресная школа, русский язык, НейроСтарт, адаптационные группы, шахматы, китайский. Новые группы открываем под запрос."
+  title="Занятия 7 дней в неделю — KIT, школа русского языка в Сингапуре"
+  description="KIT в Сингапуре открыт и ведёт занятия семь дней в неделю: русский язык, НейроСтарт, адаптационные группы, шахматы, китайский и другое — от малышей до школьников."
 >
   <section class="sch-hero">
     <div class="container">
-      <span class="eyebrow">Расписание · 2026–2027</span>
-      <h1>Расписание занятий</h1>
+      <span class="eyebrow">Занятия · 2026–2027</span>
+      <h1>Занятия семь дней в неделю</h1>
       <p class="lead">
-        Ниже — актуальные группы и время занятий. Мы регулярно открываем новые
-        группы под запрос, поэтому если удобного слота нет — напишите нам, и мы
-        подберём или соберём группу под ваше время.
+        KIT уже открыт. Мы ведём занятия каждый день недели — от самых маленьких
+        до школьников. Ниже — наши программы и дни, когда они проходят. Удобное
+        время и свободные места подскажем в WhatsApp.
       </p>
+
       <div class="hero-cta">
         <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-schedule">
-          Узнать свободные места
+          Записаться на занятия
         </a>
+        <a class="btn btn-ghost" href="/calendar">Календарь 2026–2027 →</a>
       </div>
-      <p class="sch-updated">Обновлено: {updated}</p>
     </div>
   </section>
 
@@ -118,8 +111,8 @@ const updated = new Date().toLocaleDateString("ru-RU", {
       {loadError && (
         <div class="sch-fallback">
           <p>
-            Не удалось загрузить расписание. Напишите нам в WhatsApp — пришлём
-            актуальное расписание и подберём удобное время.
+            Не удалось загрузить список программ. Напишите нам в WhatsApp — с
+            радостью расскажем про занятия и подберём удобное время.
           </p>
           <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-schedule-fallback">
             Написать в WhatsApp
@@ -129,36 +122,30 @@ const updated = new Date().toLocaleDateString("ru-RU", {
 
       {!loadError && (
         <div class="sch-grid">
-          {groups.map((g) => (
+          {programs.map((p) => (
             <article class="sch-card">
               <header class="sch-card-head">
-                <h2>{g.title}</h2>
-                {g.subtitle && <p class="sch-sub">{g.subtitle}</p>}
+                <h2>{p.title}</h2>
+                {p.subtitle && <p class="sch-sub">{p.subtitle}</p>}
               </header>
-              <ul class="sch-meta">
-                {g.age && <li><span>Возраст</span>{g.age}</li>}
-                {g.duration && <li><span>Длительность</span>{g.duration}</li>}
-              </ul>
-              {g.slots.length > 0 ? (
-                <ul class="sch-slots">
-                  {g.slots.map((s) => (
-                    <li class="sch-slot">
-                      <span class="sch-day">{s.day}</span>
-                      <span class="sch-time">{s.time}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p class="sch-tbd">Время уточняется — спросите в WhatsApp</p>
-              )}
+              {p.age && <p class="sch-age">{p.age}</p>}
+              <div class="sch-days">
+                {p.days.length > 0 ? (
+                  formatDays(p.days).map((d) => <span class="sch-day">{d}</span>)
+                ) : (
+                  <span class="sch-day sch-day-soft">По запросу</span>
+                )}
+              </div>
             </article>
           ))}
         </div>
       )}
 
       <p class="sch-note">
-        Время и состав групп могут меняться. Точное расписание и наличие мест
-        подтверждаем в <a href={WA} target="_blank" rel="noopener" data-cta="whatsapp-schedule-note">WhatsApp</a>.
+        Это не все детали — точное время занятий и наличие мест подскажем в
+        <a href={WA} target="_blank" rel="noopener" data-cta="whatsapp-schedule-note"> WhatsApp</a>.
+        Если удобного дня или времени нет — напишите нам, часто открываем новые
+        группы под запрос.
       </p>
     </div>
   </section>
@@ -170,87 +157,57 @@ const updated = new Date().toLocaleDateString("ru-RU", {
     background: linear-gradient(180deg, var(--brand-soft), var(--cream));
   }
   .sch-hero .lead { margin-top: 0.5rem; }
-  .hero-cta { margin: 1.6rem 0 0.5rem; display: flex; flex-wrap: wrap; gap: 0.8rem; }
-  .sch-updated { color: var(--muted); font-size: 0.9rem; margin: 0.6rem 0 0; }
+
+  .hero-cta { margin-top: 1.6rem; display: flex; flex-wrap: wrap; gap: 0.8rem; }
 
   .sch-list { padding-top: clamp(2rem, 5vw, 3rem); }
   .sch-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 1.2rem;
   }
   .sch-card {
     background: #fff;
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 1.4rem 1.4rem 1.2rem;
+    padding: 1.4rem;
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
   }
-  .sch-card-head h2 {
-    font-size: 1.18rem;
-    margin: 0 0 0.15rem;
+  .sch-card-head h2 { font-size: 1.15rem; margin: 0 0 0.15rem; }
+  .sch-sub { color: var(--muted); font-size: 0.85rem; margin: 0 0 0.2rem; }
+  .sch-age {
+    font-weight: 700;
+    color: var(--brand-dark);
+    margin: 0.3rem 0 0;
   }
-  .sch-sub { color: var(--muted); font-size: 0.85rem; margin: 0 0 0.4rem; }
 
-  .sch-meta {
-    list-style: none;
-    padding: 0;
-    margin: 0.6rem 0 1rem;
+  .sch-days {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem 1.2rem;
-  }
-  .sch-meta li { font-weight: 700; font-size: 0.95rem; }
-  .sch-meta span {
-    display: block;
-    font-weight: 700;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-  }
-
-  .sch-slots {
-    list-style: none;
-    padding: 0;
-    margin: auto 0 0;
-    display: flex;
-    flex-direction: column;
     gap: 0.4rem;
-    border-top: 1px solid var(--line);
-    padding-top: 0.9rem;
-  }
-  .sch-slot {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
+    margin-top: auto;
+    padding-top: 1rem;
   }
   .sch-day {
-    flex: none;
-    width: 2.4rem;
-    text-align: center;
     font-weight: 800;
     font-size: 0.85rem;
     color: var(--brand-dark);
     background: var(--brand-soft);
     border-radius: 999px;
-    padding: 0.25rem 0;
+    padding: 0.3rem 0.8rem;
   }
-  .sch-time { font-weight: 700; }
-  .sch-tbd {
-    margin: auto 0 0;
-    padding-top: 0.9rem;
-    border-top: 1px solid var(--line);
+  .sch-day-soft {
     color: var(--muted);
-    font-size: 0.92rem;
+    background: var(--line);
   }
 
   .sch-note {
     margin-top: 2rem;
     color: var(--muted);
     font-size: 0.95rem;
+    max-width: 46rem;
   }
   .sch-fallback {
     background: var(--accent-soft);
