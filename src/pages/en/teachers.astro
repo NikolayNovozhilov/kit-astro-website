@@ -1,0 +1,184 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import olga from "../../assets/images/teachers/teacher_olga_belskaya.jpg";
+import iana from "../../assets/images/teachers/teacher_yana_belskaya.jpeg";
+import ekaterina from "../../assets/images/teachers/teacher_ekaterina_kudryavtseva.jpg";
+import alexandra from "../../assets/images/teachers/teacher_aleksandra_novikova.png";
+import valeria from "../../assets/images/teachers/teacher_valeriia_lovetskaia_chess.jpeg";
+
+const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
+  "Hello! I'd like to know about the teachers and classes at KIT",
+)}`;
+
+const teachers = [
+  {
+    photo: olga,
+    name: "Olga Belskaya",
+    role: "Founder of KIT",
+    bio: "Over 15 years in education: she opened a Montessori school in Moscow in 2006 and has been building KIT in Singapore since 2017. Her mission is to help Russian-speaking children keep their mother tongue in an English-speaking environment and feel confident across two cultures.",
+  },
+  {
+    photo: iana,
+    name: "Iana Belskaya",
+    role: "Speech-language therapist, neurolinguist",
+    bio: "Over 21 years in education and 15 years working with bilingual children. Master's in speech therapy and special needs (RUDN), Montessori teacher, and teacher of Russian as a foreign language; a Singapore-certified special-needs specialist. Coaching for ADHD and dyslexia, plus an original method for children on the spectrum. Prepares students for the IGCSE and IB Russian exams.",
+  },
+  {
+    photo: ekaterina,
+    name: "Ekaterina Kudryavtseva",
+    role: "Russian language & literature · IB and IGCSE",
+    online: true,
+    bio: "PhD in Education, philologist, and specialist in Russian as a native, foreign and second-native language for bilinguals. Since 2017 she has taught Russian language and literature in the IB system, working online with schools in Singapore, Australia, the US, Europe and Asia. TORFL examiner, author of 50+ books and 200+ articles, and an expert in gamified learning.",
+  },
+  {
+    photo: alexandra,
+    name: "Alexandra Novikova",
+    role: "Music & voice",
+    bio: "Teacher with a Master's degree in music and 20 years of experience, working with students from age 4. Her students win prizes at competitions and go on to leading music and theatre universities in the UK and the US.",
+  },
+  {
+    photo: valeria,
+    name: "Valeria Lovetskaya",
+    role: "Chess coach",
+    bio: "Captain of the Singapore Polytechnic women's chess team. She has taught chess to children aged 4–16 for over 6 years. A participant in 48 official FIDE tournaments, with 2nd place in the Moscow championship semi-finals.",
+  },
+];
+---
+
+<Layout
+  lang="en"
+  altUrl="/teachers"
+  title="Our Teachers — KIT Russian Language School in Singapore"
+  description="The KIT team: a speech-language therapist, teachers of Russian language & literature, music and chess. IGCSE and IB exam prep, work with bilingual children and special-needs support."
+>
+  <section class="tch-hero">
+    <div class="container">
+      <span class="eyebrow">Teachers</span>
+      <h1>Our team</h1>
+      <p class="lead">
+        Experienced teachers who love their work and children. We work with
+        bilingual kids, prepare students for the IGCSE and IB exams, and help
+        every child flourish — in a warm, family atmosphere.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-teachers">
+          Book a class
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="tch-list">
+    <div class="container">
+      <div class="tch-grid">
+        {teachers.map((t) => (
+          <article class="tch-card">
+            <div class="tch-photo-wrap">
+              <Image src={t.photo} alt={t.name} width={640} class="tch-photo" />
+              {t.online && <span class="tch-badge">Online</span>}
+            </div>
+            <div class="tch-body">
+              <h2>{t.name}</h2>
+              <p class="tch-role">{t.role}</p>
+              <p class="tch-bio">{t.bio}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="tch-exam">
+    <div class="container">
+      <div class="tch-exam-card">
+        <div>
+          <span class="eyebrow">Exam preparation</span>
+          <h2>Russian for IGCSE and IB</h2>
+          <p>
+            We prepare students for the Russian language and literature exams — in
+            person with Iana and online with Ekaterina. Individual programmes and
+            measurable results in a short time.
+          </p>
+        </div>
+        <div class="tch-exam-links">
+          <a class="btn btn-ghost" href="/en/ib-russian/">Russian for IB →</a>
+          <a class="btn btn-ghost" href="/en/igcse-russian/">Russian for IGCSE →</a>
+          <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-teachers-exam">
+            Book a class
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .tch-hero {
+    padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(1.5rem, 4vw, 2.5rem);
+    background: linear-gradient(180deg, var(--brand-soft), var(--cream));
+  }
+  .tch-hero .lead { margin-top: 0.5rem; }
+  .hero-cta { margin-top: 1.6rem; display: flex; flex-wrap: wrap; gap: 0.8rem; }
+
+  .tch-list { padding-top: clamp(2rem, 5vw, 3rem); }
+  .tch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .tch-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .tch-photo-wrap { position: relative; aspect-ratio: 4 / 3; background: var(--brand-soft); }
+  .tch-photo { width: 100%; height: 100%; object-fit: cover; }
+  .tch-badge {
+    position: absolute;
+    top: 0.8rem;
+    left: 0.8rem;
+    background: var(--brand-dark);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+  }
+  .tch-body { padding: 1.4rem; }
+  .tch-body h2 { font-size: 1.2rem; margin: 0 0 0.2rem; }
+  .tch-role {
+    color: var(--brand);
+    font-weight: 800;
+    font-size: 0.9rem;
+    margin: 0 0 0.8rem;
+  }
+  .tch-bio { color: var(--muted); margin: 0; font-size: 0.98rem; }
+
+  .tch-exam { padding-top: clamp(1.5rem, 4vw, 2.5rem); }
+  .tch-exam-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: clamp(1.6rem, 4vw, 2.4rem);
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  .tch-exam-card h2 { margin: 0.3rem 0 0.6rem; }
+  .tch-exam-card p { color: var(--muted); margin: 0; }
+  .tch-exam-links { display: flex; flex-direction: column; gap: 0.7rem; align-items: stretch; }
+  .tch-exam-links .btn { width: 100%; }
+
+  @media (max-width: 760px) {
+    .tch-exam-card { grid-template-columns: 1fr; }
+  }
+</style>

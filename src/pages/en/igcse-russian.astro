@@ -1,0 +1,168 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
+  "Hello! I'd like to know about IGCSE Russian preparation at KIT",
+)}`;
+
+const directions = [
+  { name: "IGCSE Russian", level: "First Language" },
+  { name: "IGCSE Russian", level: "Second Language" },
+  { name: "IGCSE Russian", level: "Foreign Language" },
+];
+
+const schools = [
+  "Leading international schools in Singapore",
+  "International schools in Europe",
+  "Private and international schools in the UAE",
+  "and other schools worldwide",
+];
+
+const steps = [
+  "Run an objective assessment of the student's current level.",
+  "Choose the optimal format and level of the exam programme.",
+  "Work through every tricky section of the exam — vocabulary, grammar, written work and reading comprehension.",
+];
+---
+
+<Layout
+  lang="en"
+  altUrl="/igcse-russian"
+  title="IGCSE Russian Tutoring in Singapore | KIT"
+  description="IGCSE Russian exam prep: First Language, Second Language, Foreign Language. 10+ years' experience, individual programmes, top grades."
+>
+  <!-- Hero -->
+  <section class="exam-hero">
+    <div class="container">
+      <span class="eyebrow">International exams · 10+ years' experience</span>
+      <h1>IGCSE Russian preparation</h1>
+      <p class="lead">
+        For over 10 years our team has prepared students for the IGCSE Russian
+        exams — First, Second and Foreign Language. We match the format to your
+        child's level, methodically close any gaps, and take preparation all the
+        way to confident top grades.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-igcse">
+          Book a consultation
+        </a>
+        <a class="btn btn-ghost" href="/en/#contact">Find us</a>
+      </div>
+      <ul class="trust-chips">
+        <li>10+ years' experience</li>
+        <li>Individual programme</li>
+        <li>First / Second / Foreign</li>
+        <li>Top grades</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Directions -->
+  <section class="exam-section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Areas of preparation</span>
+        <h2>IGCSE Russian exam levels</h2>
+      </div>
+      <div class="exam-grid exam-grid-3">
+        {
+          directions.map((d) => (
+            <div class="exam-card">
+              <h3>{d.name}</h3>
+              <p>{d.level}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Schools -->
+  <section class="exam-schools">
+    <div class="container section-head center">
+      <span class="eyebrow">Trusted by</span>
+      <h2>Schools we work with</h2>
+      <p class="lead" style="margin-inline:auto">
+        Families from leading international and private schools around the world
+        trust us, including:
+      </p>
+      <ul class="school-list">
+        {schools.map((s) => <li>{s}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- When to start -->
+  <section class="exam-when">
+    <div class="container exam-when-inner">
+      <div>
+        <span class="eyebrow">When to start</span>
+        <h2>We recommend starting 2–3 years before the exam</h2>
+        <p class="lead">
+          It's best to come to us 2–3 years before the exam — at the start of the
+          IGCSE preparation cycle in secondary school. That gives us time to:
+        </p>
+      </div>
+      <ol class="steps">
+        {steps.map((s) => <li>{s}</li>)}
+      </ol>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="exam-cta">
+    <div class="container exam-cta-inner">
+      <h2>Keep Russian a part of your child's life</h2>
+      <p>
+        Message us — we'll walk you through class formats, exam levels and the
+        testing schedule, and build an individual preparation plan.
+      </p>
+      <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-igcse-cta">
+        Message us on WhatsApp
+      </a>
+      <p class="cross-link">
+        Preparing for IB instead? →
+        <a href="/en/ib-russian/">IB Russian language & literature preparation</a>
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .exam-hero {
+    background: radial-gradient(1200px 500px at 80% -10%, var(--brand-soft), transparent 60%),
+      linear-gradient(180deg, var(--cream), #fff);
+    padding: clamp(3rem, 6vw, 5rem) 0 clamp(2.5rem, 5vw, 4rem);
+  }
+  .exam-hero h1 { font-size: clamp(2rem, 5vw, 3.1rem); font-weight: 900; max-width: 20ch; }
+  .exam-hero .lead { max-width: 52ch; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1.6rem 0; }
+  .trust-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.6rem; padding: 0; margin: 0; }
+  .trust-chips li { background: #fff; border: 1px solid var(--line); color: var(--brand-dark); font-weight: 700; font-size: 0.9rem; padding: 0.4rem 0.9rem; border-radius: 999px; }
+
+  .exam-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.3rem; }
+  .exam-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .exam-card { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 1.4rem 1.5rem; box-shadow: var(--shadow); }
+  .exam-card h3 { color: var(--brand-dark); margin-bottom: 0.3rem; }
+  .exam-card p { color: var(--muted); margin: 0; font-weight: 700; }
+
+  .exam-schools { background: var(--accent-soft); }
+  .school-list { list-style: none; padding: 0; margin: 1.5rem auto 0; max-width: 40rem; display: grid; gap: 0.7rem; text-align: left; }
+  .school-list li { background: #fff; border-radius: var(--radius); padding: 0.9rem 1.3rem; box-shadow: var(--shadow); font-weight: 700; }
+  .school-list li::before { content: "✓"; color: var(--accent); font-weight: 900; margin-right: 0.6rem; }
+
+  .exam-when-inner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .steps { margin: 0; padding-left: 1.2rem; display: grid; gap: 1rem; }
+  .steps li { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.3rem; box-shadow: var(--shadow); color: var(--ink); }
+
+  .exam-cta { background: var(--brand-dark); color: #eaf5f3; }
+  .exam-cta-inner { max-width: 620px; margin: 0 auto; text-align: center; }
+  .exam-cta h2 { color: #fff; }
+  .exam-cta .btn { margin-top: 0.5rem; }
+  .cross-link { margin-top: 1.6rem; font-size: 0.95rem; opacity: 0.9; }
+  .cross-link a { color: #fff; font-weight: 800; text-decoration: underline; }
+
+  @media (max-width: 760px) {
+    .exam-grid, .exam-grid-3, .exam-when-inner { grid-template-columns: 1fr; }
+  }
+</style>

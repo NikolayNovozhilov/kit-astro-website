@@ -116,11 +116,18 @@ const navRu = [
   { href: "/#contact", label: "Контакты" },
 ];
 
-// English chrome uses simple in-page anchors — the sub-pages are Russian-only,
-// so we don't link the English nav to them.
 const navEn = [
-  { href: "/en/#programs", label: "Programmes" },
-  { href: "/en/#teachers", label: "Teachers" },
+  {
+    label: "Programmes",
+    children: [
+      { href: "/en/#programs", label: "Overview" },
+      { href: "/en/neurostart", label: "NeuroStart" },
+      { href: "/en/chess", label: "Chess" },
+      { href: "/en/ib-russian", label: "Russian for IB" },
+      { href: "/en/igcse-russian", label: "Russian for IGCSE" },
+    ],
+  },
+  { href: "/en/teachers", label: "Teachers" },
   { href: "/en/#reviews", label: "Reviews" },
   { href: "/en/#contact", label: "Contact" },
 ];
