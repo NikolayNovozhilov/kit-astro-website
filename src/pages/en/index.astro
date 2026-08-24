@@ -1,0 +1,401 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+
+import heroImg from "../../assets/images/gallery/summer_camp_kids_1.jpeg";
+import weekendImg from "../../assets/images/programs/program_weekend_school.jpg";
+import speechImg from "../../assets/images/programs/program_speech_therapy.jpg";
+import teacherIana from "../../assets/images/teachers/teacher_yana_belskaya.jpeg";
+import teacherAlexandra from "../../assets/images/teachers/teacher_aleksandra_novikova.png";
+import teacherOlga from "../../assets/images/teachers/teacher_olga_belskaya.jpg";
+import statIcon1 from "../../assets/images/icons/icon_graduation_cap.png";
+import statIcon2 from "../../assets/images/icons/icon_brainstorming.png";
+import statIcon3 from "../../assets/images/icons/icon_teaching.png";
+
+const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
+  "Hello! I'd like to know more about classes at KIT",
+)}`;
+
+const stats = [
+  { icon: statIcon1, value: "100+", label: "students" },
+  { icon: statIcon2, value: "since 2006", label: "teaching · in Singapore since 2017" },
+  { icon: statIcon3, value: "10", label: "teachers" },
+];
+
+const teachers = [
+  {
+    photo: teacherIana,
+    name: "Iana Belskaya",
+    role: "Speech-language therapist",
+    bio: "Speech-language therapist, social and Montessori teacher. 12 years working with children, 6 of them as a speech therapist, with extensive experience with bilingual kids. Speech-therapy degree from RUDN University (Moscow). Focuses on interhemispheric development and sensory stimulation.",
+  },
+  {
+    photo: teacherAlexandra,
+    name: "Alexandra Novikova",
+    role: "Music & voice",
+    bio: "Teacher with a Master's degree in music and 20 years of experience, working with students from age 4. Her students win prizes at competitions and go on to leading music and theatre universities in the UK and the US.",
+  },
+  {
+    photo: teacherOlga,
+    name: "Olga Belskaya",
+    role: "Founder of KIT",
+    bio: "Over 15 years in education: she opened a Montessori school in Moscow in 2006 and has been building KIT in Singapore since 2017. Her mission today is to help Russian-speaking children keep their mother tongue while growing up in an English-speaking environment.",
+  },
+];
+
+const reviews = [
+  {
+    name: "Anna Volkova",
+    meta: "Google · May 2024",
+    text: "…we needed additional support of a speech therapist. Not only the result, but also the attitude and attention by all the staff and specifically Iana were outstanding. We felt so welcome from the first day… it was hard to take my kid back home, as he wanted to stay for more.",
+  },
+  {
+    name: "Angela Belka",
+    meta: "Google · March 2025",
+    text: "Our son loves the school, teachers and schoolmates. And we as parents appreciate the teachers’ approach and attention, which is not only helping to progress academically, but to build self-confidence as well.",
+  },
+  {
+    name: "Yulia McGrath",
+    meta: "Google · March 2025",
+    text: "Highly recommended school with small class setup environment and individual approach to every student. Great option if you are looking for personalised attention to your child while following IPC. Run by motivated, enthusiastic and qualified specialists and teachers!",
+  },
+  {
+    name: "Alena Zhdanova",
+    meta: "Google · March 2025",
+    text: "A great school with a wonderful atmosphere. Our children are happy to attend classes and always come back with new knowledge and positive impressions. The teachers are attentive, kind, and truly care about the children.",
+  },
+  {
+    name: "Marina Semenkova",
+    meta: "Google · April 2025",
+    text: "Huge thanks to the wonderful teachers at KIT for their professionalism, individual approach, personal support and family atmosphere. I recommend it for children who feel stressed in large international schools and need more attentive care.",
+  },
+];
+---
+
+<Layout
+  lang="en"
+  altUrl="/"
+  title="Russian Language School in Singapore for Kids | KIT"
+  description="Russian classes for children in Singapore — from 10 months to teens. Weekend school, speech therapy, IB & IGCSE Russian, and camps. Message us on WhatsApp."
+>
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">KIT · Russian language school in Singapore</span>
+        <h1>
+          Russian language school in Singapore —
+          <span class="hl">from 10 months to teens</span>
+        </h1>
+        <p class="lead">
+          Helping bilingual children keep and grow their Russian while growing up
+          in an English-speaking world.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-hero">
+            Message us on WhatsApp
+          </a>
+          <a class="btn btn-ghost" href="#programs">Our programmes</a>
+        </div>
+        <p class="hero-note">
+          We usually reply within a working day · online 9:00–18:00, 7 days a week
+        </p>
+      </div>
+      <div class="hero-media">
+        <Image
+          src={heroImg}
+          alt="Children in class at KIT Russian language school in Singapore"
+          width={1000}
+          loading="eager"
+          fetchpriority="high"
+          class="hero-img"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust strip -->
+  <section class="trust" aria-label="KIT in numbers">
+    <div class="container trust-inner">
+      {
+        stats.map((st) => (
+          <div class="stat">
+            <Image src={st.icon} alt="" width={56} height={56} class="stat-icon" />
+            <div>
+              <div class="stat-value">{st.value}</div>
+              <div class="stat-label">{st.label}</div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="mission">
+    <div class="container mission-inner">
+      <div class="section-head">
+        <span class="eyebrow">Who we are</span>
+        <h2>Keeping Russian a first language</h2>
+        <p>
+          KIT is a Russian language and enrichment school for bilingual children
+          in Singapore. Our students grow up in English-speaking Singapore, and we
+          make sure Russian doesn’t fade into the background — that reading stays
+          interesting, speaking stays easy, and making mistakes is never scary.
+        </p>
+        <p>
+          For families who’ve recently relocated, we also help children settle in —
+          with the language, school, and new friends. Small groups and genuine
+          attention to every child are what parents thank us for most.
+        </p>
+      </div>
+      <ul class="mission-points">
+        <li>
+          <strong>Small groups</strong>
+          <span>Every child is seen and heard — none of the stress of big classes.</span>
+        </li>
+        <li>
+          <strong>Family atmosphere</strong>
+          <span>A warm environment children are happy to come back to.</span>
+        </li>
+        <li>
+          <strong>Individual attention</strong>
+          <span>We match the pace and format to each child’s level and age.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Programmes -->
+  <section class="programs" id="programs">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Programmes</span>
+        <h2>What and how we teach</h2>
+        <p class="lead" style="margin-inline:auto">
+          Classes for children from 10 months to teens. Below are the essentials —
+          for the full schedule and fees, just message us on WhatsApp.
+        </p>
+      </div>
+
+      <div class="flagships">
+        <article class="flagship">
+          <div class="flagship-media">
+            <Image src={weekendImg} alt="Saturday and Sunday school at KIT" width={720} />
+            <span class="badge badge-accent">Weekend</span>
+          </div>
+          <div class="flagship-body">
+            <h3>Saturday & Sunday school</h3>
+            <p class="meta-line">Sat & Sun · 09:30–12:30 · 3 hours + lunch · ages ~2–12</p>
+            <p>
+              Two blocks in every session: <strong>academics</strong> — reading,
+              writing, speech and maths; and <strong>all-round development</strong>
+              — art studio, science, chess and cooking. Structured by age, from
+              school prep to middle school.
+            </p>
+            <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-weekend">
+              Ask about enrolment
+            </a>
+          </div>
+        </article>
+
+        <article class="flagship">
+          <div class="flagship-media">
+            <Image src={speechImg} alt="Speech therapist at KIT" width={720} />
+            <span class="badge badge-brand">Speech therapy</span>
+          </div>
+          <div class="flagship-body">
+            <h3>Speech development & therapy</h3>
+            <p class="meta-line">One-to-one · with speech therapist Iana</p>
+            <p>
+              Led by our in-house speech-language therapist with deep experience with
+              bilingual children: speech development, articulation and breathing
+              exercises, sound production, speech-therapy massage, and fine & gross
+              motor skills.
+            </p>
+            <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-speech">
+              Book a consultation
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <div class="inline-cta">
+        <span class="inline-cta-text">
+          We also run weekday classes for ages ~10 months to teens: playcamps and
+          early-years groups, Russian language & literature, maths, science, chess,
+          art, coding, and exam prep for <strong>IB</strong> and
+          <strong>IGCSE Russian</strong>.
+        </span>
+        <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-weekday">
+          Find the right class
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teachers -->
+  <section class="teachers" id="teachers">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Our team</span>
+        <h2>Our teachers</h2>
+        <p class="lead" style="margin-inline:auto">
+          Qualified specialists with years of experience working with bilingual
+          children.
+        </p>
+      </div>
+      <div class="teacher-grid">
+        {
+          teachers.map((t) => (
+            <article class="teacher-card">
+              <Image src={t.photo} alt={t.name} width={360} class="teacher-photo" />
+              <h3>{t.name}</h3>
+              <p class="teacher-role">{t.role}</p>
+              <p class="teacher-bio">{t.bio}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="reviews" id="reviews">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Reviews</span>
+        <h2>What parents say</h2>
+      </div>
+      <div class="review-grid">
+        {
+          reviews.map((r) => (
+            <figure class="review-card">
+              <div class="review-stars" aria-label="5 out of 5">★★★★★</div>
+              <blockquote>{r.text}</blockquote>
+              <figcaption>
+                <span class="review-name">{r.name}</span>
+                <span class="review-meta">{r.meta}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <div class="container contact-inner">
+      <div class="contact-copy">
+        <span class="eyebrow">Contact</span>
+        <h2>Find us</h2>
+        <p class="contact-address">
+          91 Bencoolen St, #08-05 (Office Tower)<br />
+          Sunshine Plaza, Singapore 189652
+        </p>
+        <ul class="contact-list">
+          <li><strong>MRT:</strong> Bencoolen — 3 min walk · Bras Basah — 5 min · Bugis — 9 min</li>
+          <li><strong>Parking:</strong> available in the building, central location</li>
+          <li><strong>Hours:</strong> online 9:00–18:00, 7 days a week</li>
+          <li><strong>Phone:</strong> <a href="tel:+6531386228">+65 3138 6228</a></li>
+          <li><strong>Email:</strong> <a href="mailto:kit-enrichment@kit-learning.com">kit-enrichment@kit-learning.com</a></li>
+        </ul>
+        <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-contact">
+          Message us on WhatsApp
+        </a>
+      </div>
+      <div class="contact-map">
+        <iframe
+          title="KIT Learning on the map — 91 Bencoolen St, Sunshine Plaza"
+          src="https://maps.google.com/maps?q=91%20Bencoolen%20Street%20Sunshine%20Plaza%20Singapore%20189652&z=16&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    background: radial-gradient(1200px 500px at 80% -10%, var(--brand-soft), transparent 60%),
+      linear-gradient(180deg, var(--cream), #fff);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .hero h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); font-weight: 900; }
+  .hero h1 .hl { color: var(--brand); }
+  .hero .lead { font-size: 1.3rem; color: var(--ink); margin-top: 0.25rem; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1.6rem 0 1rem; }
+  .hero-note { font-size: 0.92rem; color: var(--muted); margin: 0; }
+  .hero-img {
+    width: 100%; height: auto; border-radius: 24px; box-shadow: var(--shadow-lg);
+    object-fit: cover; aspect-ratio: 4 / 3;
+  }
+
+  .trust { background: var(--brand); color: #fff; padding: clamp(1.5rem, 3vw, 2.2rem) 0; }
+  .trust-inner { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .stat { display: flex; align-items: center; gap: 1rem; justify-content: center; }
+  .stat-icon { width: 56px; height: 56px; object-fit: contain; background: #fff; border-radius: 14px; padding: 8px; }
+  .stat-value { font-size: 1.9rem; font-weight: 900; line-height: 1; }
+  .stat-label { font-size: 0.95rem; opacity: 0.9; }
+
+  .mission-inner { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .mission-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .mission-points li { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1.1rem 1.3rem; box-shadow: var(--shadow); }
+  .mission-points strong { display: block; color: var(--brand-dark); margin-bottom: 0.2rem; }
+  .mission-points span { color: var(--muted); font-size: 0.98rem; }
+
+  .programs { background: linear-gradient(180deg, #fff, var(--cream)); }
+  .flagships { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; }
+  .flagship { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+  .flagship-media { position: relative; }
+  .flagship-media :global(img) { width: 100%; height: 260px; object-fit: cover; }
+  .badge { position: absolute; top: 14px; left: 14px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.35rem 0.8rem; border-radius: 999px; color: #fff; }
+  .badge-accent { background: var(--accent); }
+  .badge-brand { background: var(--brand); }
+  .flagship-body { padding: 1.5rem 1.6rem 1.8rem; display: flex; flex-direction: column; }
+  .meta-line { color: var(--brand-dark); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.7rem; }
+  .btn-sm { padding: 0.7rem 1.1rem; font-size: 0.95rem; align-self: flex-start; margin-top: auto; }
+  .inline-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.3rem 1.6rem; background: var(--brand-soft); border-radius: var(--radius); margin-top: 2rem; }
+  .inline-cta-text { font-weight: 600; color: var(--ink); max-width: 46rem; }
+
+  .teacher-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+  .teacher-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; text-align: center; box-shadow: var(--shadow); }
+  .teacher-photo { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; border: 4px solid var(--brand-soft); }
+  .teacher-role { color: var(--accent); font-weight: 800; margin: 0 0 0.6rem; }
+  .teacher-bio { color: var(--muted); font-size: 0.96rem; margin: 0; text-align: left; }
+
+  .reviews { background: linear-gradient(180deg, var(--cream), #fff); }
+  .review-grid { columns: 3; column-gap: 1.4rem; }
+  .review-card { break-inside: avoid; margin: 0 0 1.4rem; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1.4rem 1.5rem; box-shadow: var(--shadow); }
+  .review-stars { color: #f7b500; letter-spacing: 2px; margin-bottom: 0.6rem; }
+  .review-card blockquote { margin: 0 0 1rem; font-size: 0.98rem; line-height: 1.55; }
+  .review-name { display: block; font-weight: 800; }
+  .review-meta { font-size: 0.85rem; color: var(--muted); }
+
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 3.5rem); align-items: stretch; }
+  .contact-address { font-size: 1.15rem; font-weight: 700; }
+  .contact-list { list-style: none; padding: 0; margin: 0 0 1.5rem; display: grid; gap: 0.7rem; }
+  .contact-list li { padding-bottom: 0.7rem; border-bottom: 1px solid var(--line); color: var(--muted); }
+  .contact-list strong { color: var(--ink); }
+  .contact-map { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); min-height: 360px; }
+  .contact-map iframe { width: 100%; height: 100%; min-height: 360px; border: 0; }
+
+  @media (max-width: 900px) {
+    .hero-inner, .mission-inner, .flagships, .teacher-grid, .contact-inner { grid-template-columns: 1fr; }
+    .hero-media { order: -1; }
+    .trust-inner { grid-template-columns: 1fr; gap: 1rem; }
+    .stat { justify-content: flex-start; }
+    .review-grid { columns: 2; }
+  }
+  @media (max-width: 560px) {
+    .review-grid { columns: 1; }
+    .inline-cta { flex-direction: column; align-items: flex-start; }
+  }
+</style>

@@ -5,19 +5,60 @@ import logo from "../assets/images/branding/logo_kit_learning_trimmed.png";
 export interface Props {
   title?: string;
   description?: string;
+  lang?: "ru" | "en";
+  /** URL of the translated counterpart — enables hreflang tags + the language switch. */
+  altUrl?: string;
 }
 
 const {
   title = "Школа русского языка в Сингапуре — KIT | Занятия для детей от 10 месяцев",
   description = "KIT — русская школа в Сингапуре. Уроки русского языка для детей от 18 месяцев до старшеклассников, занятия с логопедом-дефектологом.",
+  lang = "ru",
+  altUrl,
 } = Astro.props;
 
-// Single source of truth for the WhatsApp CTA (URL-encoded Russian pre-fill).
-const WA =
-  "https://wa.me/6580745012?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%20%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D1%8F%20%D0%B2%20KIT";
+const isEn = lang === "en";
+
+// WhatsApp CTA with a language-appropriate pre-fill.
+const waText = isEn
+  ? "Hello! I'd like to know more about classes at KIT"
+  : "Здравствуйте! Хочу узнать про занятия в KIT";
+const WA = `https://wa.me/6580745012?text=${encodeURIComponent(waText)}`;
 const PHONE = "+65 3138 6228";
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const altCanonical = altUrl ? new URL(altUrl, Astro.site).href : null;
+const ruHref = isEn ? altCanonical : canonical;
+const enHref = isEn ? canonical : altCanonical;
+
+// UI chrome strings (nav, footer, buttons) per language.
+const s = isEn
+  ? {
+      skip: "Skip to content",
+      navAria: "Main navigation",
+      openMenu: "Open menu",
+      whatsapp: "Message on WhatsApp",
+      whatsappShort: "Chat",
+      brandAria: "KIT Learning — home",
+      footerContacts: "Contact",
+      footerSocial: "Follow us",
+      footerTagline: "Russian language school in Singapore.",
+      langSwitch: "RU",
+      langSwitchAria: "Перейти на русскую версию",
+    }
+  : {
+      skip: "Перейти к содержанию",
+      navAria: "Основная навигация",
+      openMenu: "Открыть меню",
+      whatsapp: "Написать в WhatsApp",
+      whatsappShort: "Написать",
+      brandAria: "KIT Learning — на главную",
+      footerContacts: "Контакты",
+      footerSocial: "Мы в соцсетях",
+      footerTagline: "Школа русского языка в Сингапуре.",
+      langSwitch: "EN",
+      langSwitchAria: "Switch to English",
+    };
 
 // EducationalOrganization / LocalBusiness structured data for local SEO.
 const jsonLd = {
@@ -52,7 +93,7 @@ const jsonLd = {
 // Absolute (with leading "/") so they jump to the homepage section from any page,
 // including subpages like /neurostart. On the homepage they still scroll in-page.
 // Some items open a dropdown (children); the rest are plain links.
-const nav = [
+const navRu = [
   {
     label: "Программы",
     children: [
@@ -74,10 +115,21 @@ const nav = [
   { href: "/#reviews", label: "Отзывы" },
   { href: "/#contact", label: "Контакты" },
 ];
+
+// English chrome uses simple in-page anchors — the sub-pages are Russian-only,
+// so we don't link the English nav to them.
+const navEn = [
+  { href: "/en/#programs", label: "Programmes" },
+  { href: "/en/#teachers", label: "Teachers" },
+  { href: "/en/#reviews", label: "Reviews" },
+  { href: "/en/#contact", label: "Contact" },
+];
+
+const nav = isEn ? navEn : navRu;
 ---
 
 <!doctype html>
-<html lang="ru">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -86,11 +138,21 @@ const nav = [
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
 
+    {
+      altUrl && (
+        <>
+          <link rel="alternate" hreflang="ru" href={ruHref} />
+          <link rel="alternate" hreflang="en" href={enHref} />
+          <link rel="alternate" hreflang="x-default" href={ruHref} />
+        </>
+      )
+    }
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:locale" content={isEn ? "en_SG" : "ru_RU"} />
     <meta property="og:url" content={canonical} />
 
     <!-- Fonts: Nunito has a full Cyrillic subset and reads warm/friendly -->
@@ -157,11 +219,11 @@ const nav = [
       /></noscript>
   </head>
   <body>
-    <a class="skip-link" href="#main">Перейти к содержанию</a>
+    <a class="skip-link" href="#main">{s.skip}</a>
 
     <header class="site-header">
       <div class="container header-inner">
-        <a href="/#top" class="brand" aria-label="KIT Learning — на главную">
+        <a href={isEn ? "/en/#top" : "/#top"} class="brand" aria-label={s.brandAria}>
           <Image
             src={logo}
             alt="KIT Learning"
@@ -171,7 +233,7 @@ const nav = [
           />
         </a>
 
-        <nav class="main-nav" aria-label="Основная навигация">
+        <nav class="main-nav" aria-label={s.navAria}>
           {nav.map((i) =>
             i.children ? (
               <div class="nav-item has-submenu">
@@ -215,13 +277,21 @@ const nav = [
                 d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.42 5.82c0 4.54-3.7 8.23-8.25 8.23-1.52 0-3.01-.41-4.3-1.18l-.31-.18-3.12.82.83-3.04-.2-.32a8.16 8.16 0 0 1-1.26-4.35c0-4.54 3.7-8.24 8.36-8.24m4.52 11.62c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28"
               ></path></svg
             >
-            <span>Написать в WhatsApp</span>
+            <span>{s.whatsapp}</span>
+          </a>
+          <a
+            class="lang-switch"
+            href={altUrl}
+            hidden={!altUrl}
+            aria-label={s.langSwitchAria}
+          >
+            {s.langSwitch}
           </a>
         </div>
 
         <button
           class="nav-toggle"
-          aria-label="Открыть меню"
+          aria-label={s.openMenu}
           aria-expanded="false"
         >
           <span></span><span></span><span></span>
@@ -250,7 +320,7 @@ const nav = [
         </div>
 
         <div>
-          <h3>Контакты</h3>
+          <h3>{s.footerContacts}</h3>
           <p>
             91 Bencoolen St, #08-05<br />
             Sunshine Plaza, Singapore 189652
@@ -264,7 +334,7 @@ const nav = [
         </div>
 
         <div>
-          <h3>Мы в соцсетях</h3>
+          <h3>{s.footerSocial}</h3>
           <ul class="footer-social">
             <li>
               <a href="https://www.instagram.com/kit_russian_language_singapore" target="_blank" rel="noopener">Instagram</a>
@@ -277,12 +347,12 @@ const nav = [
             </li>
           </ul>
           <a class="btn btn-wa footer-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-footer">
-            Написать в WhatsApp
+            {s.whatsapp}
           </a>
         </div>
       </div>
       <div class="container footer-bottom">
-        <p>© {new Date().getFullYear()} KIT Learning Pte. Ltd. Школа русского языка в Сингапуре.</p>
+        <p>© {new Date().getFullYear()} KIT Learning Pte. Ltd. {s.footerTagline}</p>
       </div>
     </footer>
 
@@ -292,7 +362,7 @@ const nav = [
       href={WA}
       target="_blank"
       rel="noopener"
-      aria-label="Написать в WhatsApp"
+      aria-label={s.whatsapp}
       data-cta="whatsapp-sticky"
     >
       <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"
@@ -301,7 +371,7 @@ const nav = [
           d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.42 5.82c0 4.54-3.7 8.23-8.25 8.23-1.52 0-3.01-.41-4.3-1.18l-.31-.18-3.12.82.83-3.04-.2-.32a8.16 8.16 0 0 1-1.26-4.35c0-4.54 3.7-8.24 8.36-8.24m4.52 11.62c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28"
         ></path></svg
       >
-      <span class="sticky-wa-label">Написать</span>
+      <span class="sticky-wa-label">{s.whatsappShort}</span>
     </a>
 
     <script is:inline>
@@ -651,6 +721,27 @@ const nav = [
         color: var(--ink);
         font-weight: 800;
         white-space: nowrap;
+      }
+      .lang-switch {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        height: 34px;
+        padding: 0 0.5rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        font-weight: 800;
+        font-size: 0.85rem;
+        color: var(--brand-dark);
+        background: #fff;
+      }
+      .lang-switch:hover {
+        border-color: var(--brand);
+        text-decoration: none;
+      }
+      .lang-switch[hidden] {
+        display: none;
       }
       .nav-toggle {
         display: none;
