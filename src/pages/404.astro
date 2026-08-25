@@ -6,22 +6,30 @@ const WA =
 ---
 
 <Layout
-  title="Страница не найдена — KIT"
-  description="Страница не найдена. Вернитесь на главную или напишите нам в WhatsApp."
+  title="Страница не найдена · Page not found — KIT"
+  description="Страница не найдена. Вернитесь на главную или напишите нам в WhatsApp. · Page not found — head back home or message us on WhatsApp."
 >
   <section class="notfound">
     <div class="container notfound-inner">
       <span class="nf-code">404</span>
-      <h1>Страница не найдена</h1>
+      <h1>
+        Страница не найдена
+        <span class="nf-en-title">Page not found</span>
+      </h1>
       <p class="lead">
         Возможно, ссылка устарела или страница переехала. Вернитесь на главную —
         или просто напишите нам, и мы поможем.
       </p>
+      <p class="lead nf-en">
+        This page may have moved or the link is out of date. Head back home — or
+        message us and we'll help.
+      </p>
       <div class="nf-cta">
         <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-404">
-          Написать в WhatsApp
+          Написать · Message us
         </a>
         <a class="btn btn-ghost" href="/">На главную</a>
+        <a class="btn btn-ghost" href="/en/">Home (EN)</a>
       </div>
     </div>
   </section>
@@ -57,8 +65,19 @@ const WA =
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     margin-top: 0.5rem;
   }
+  .nf-en-title {
+    display: block;
+    color: var(--muted);
+    font-weight: 800;
+    font-size: 0.75em;
+    margin-top: 0.15rem;
+  }
   .notfound .lead {
     margin-inline: auto;
+  }
+  .nf-en {
+    color: var(--muted);
+    font-size: 1.02rem;
   }
   .nf-cta {
     display: flex;

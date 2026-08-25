@@ -1,21 +1,23 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 
 const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
-  "Здравствуйте! Хочу записаться на занятия в KIT и узнать удобное время",
+  "Hello! I'd like to sign up for classes at KIT and find a convenient time",
 )}`;
 
-// ---- Single source of truth: the Google Sheet, read live as CSV ----
-// Anyone-with-link (Viewer) sharing is enough for this public export endpoint.
-// Runs at build time (and per request in `astro dev`), in Node — no CORS.
+// ---- Same Google Sheet source as the Russian /schedule page ----
 const SHEET_ID = "1ta5lSAKOVQ4CSLBCGv5ouJPSCtLynaVaDavjmtB1w6E";
 const SHEET_CSV = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
 
-const DAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]; // sheet columns D–J
+// Sheet columns D–J are Mon–Sun; render English labels here.
+const DAY_KEYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+const DAY_EN: Record<string, string> = {
+  "Пн": "Mon", "Вт": "Tue", "Ср": "Wed", "Чт": "Thu",
+  "Пт": "Fri", "Сб": "Sat", "Вс": "Sun",
+};
 
 type Program = { title: string; subtitle: string; age: string; days: string[] };
 
-// Minimal RFC-4180-ish CSV parser (handles quotes, escaped quotes, newlines).
 function parseCSV(text: string): string[][] {
   const rows: string[][] = [];
   let row: string[] = [];
@@ -37,12 +39,12 @@ function parseCSV(text: string): string[][] {
   return rows;
 }
 
-// Collapse a set of weekdays into readable chips (Пн–Пт when it's the full week).
+// Collapse the five weekdays into a single "Mon–Fri" chip when they all run.
 function formatDays(days: string[]): string[] {
   const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт"];
   if (weekdays.length === days.length && weekdays.every((d) => days.includes(d)))
-    return ["Пн–Пт"];
-  return days;
+    return ["Mon–Fri"];
+  return days.map((d) => DAY_EN[d] ?? d);
 }
 
 let programs: Program[] = [];
@@ -56,27 +58,25 @@ try {
   const headerIdx = rows.findIndex((r) => (r[0] ?? "").trim() === "Группа");
   const dataRows = headerIdx >= 0 ? rows.slice(headerIdx + 1) : [];
 
-  // Merge rows that are the same programme + age (e.g. NeuroStart half/full day)
-  // and keep only which days each runs — no times, no durations.
   const byKey = new Map<string, Program>();
   for (const r of dataRows) {
     const name = (r[0] ?? "").trim();
     if (!name) continue;
     const age = (r[1] ?? "").trim();
+    // Sheet names are "English / Russian" — use the English part as the title here.
     const [en, ru] = name.split("/").map((s) => s.trim());
     const key = `${name}|${age}`;
     const prog =
-      byKey.get(key) ?? { title: ru || en, subtitle: ru ? en : "", age, days: [] };
-    for (let i = 0; i < DAYS.length; i++) {
-      const cell = (r[3 + i] ?? "").trim(); // any non-empty cell = runs that day
-      if (cell && !prog.days.includes(DAYS[i])) prog.days.push(DAYS[i]);
+      byKey.get(key) ?? { title: en || ru, subtitle: en ? ru : "", age, days: [] };
+    for (let i = 0; i < DAY_KEYS.length; i++) {
+      const cell = (r[3 + i] ?? "").trim();
+      if (cell && !prog.days.includes(DAY_KEYS[i])) prog.days.push(DAY_KEYS[i]);
     }
     byKey.set(key, prog);
   }
-  // Keep sheet order, but sort each programme's days Mon→Sun.
   programs = [...byKey.values()].map((p) => ({
     ...p,
-    days: DAYS.filter((d) => p.days.includes(d)),
+    days: DAY_KEYS.filter((d) => p.days.includes(d)),
   }));
 } catch (e) {
   loadError = true;
@@ -84,25 +84,27 @@ try {
 ---
 
 <Layout
-  altUrl="/en/schedule"
-  title="Занятия 7 дней в неделю — KIT, школа русского языка в Сингапуре"
-  description="KIT в Сингапуре открыт и ведёт занятия семь дней в неделю: русский язык, НейроСтарт, адаптационные группы, шахматы, китайский и другое — от малышей до школьников."
+  lang="en"
+  altUrl="/schedule"
+  title="Classes 7 Days a Week — KIT Russian Language School in Singapore"
+  description="KIT in Singapore is open and runs classes seven days a week: Russian language, NeuroStart, settling-in groups, chess, Chinese and more — from toddlers to school-age children."
 >
   <section class="sch-hero">
     <div class="container">
-      <span class="eyebrow">Занятия · 2026–2027</span>
-      <h1>Занятия семь дней в неделю</h1>
+      <span class="eyebrow">Classes · 2026–2027</span>
+      <h1>Classes seven days a week</h1>
       <p class="lead">
-        KIT уже открыт. Мы ведём занятия каждый день недели — от самых маленьких
-        до школьников. Ниже — наши программы и дни, когда они проходят. Удобное
-        время и свободные места подскажем в WhatsApp.
+        KIT is already open. We run classes every day of the week — from the
+        littlest ones to school-age children. Below are our programmes and the
+        days they run. We'll suggest a convenient time and available places on
+        WhatsApp.
       </p>
 
       <div class="hero-cta">
-        <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-schedule">
-          Записаться на занятия
+        <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-schedule">
+          Book a class
         </a>
-        <a class="btn btn-ghost" href="/calendar">Календарь 2026–2027 →</a>
+        <a class="btn btn-ghost" href="/en/calendar/">Calendar 2026–2027 →</a>
       </div>
     </div>
   </section>
@@ -112,11 +114,11 @@ try {
       {loadError && (
         <div class="sch-fallback">
           <p>
-            Не удалось загрузить список программ. Напишите нам в WhatsApp — с
-            радостью расскажем про занятия и подберём удобное время.
+            We couldn't load the programme list. Message us on WhatsApp — we'll be
+            glad to tell you about the classes and find a convenient time.
           </p>
-          <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-schedule-fallback">
-            Написать в WhatsApp
+          <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-schedule-fallback">
+            Message us on WhatsApp
           </a>
         </div>
       )}
@@ -134,7 +136,7 @@ try {
                 {p.days.length > 0 ? (
                   formatDays(p.days).map((d) => <span class="sch-day">{d}</span>)
                 ) : (
-                  <span class="sch-day sch-day-soft">По запросу</span>
+                  <span class="sch-day sch-day-soft">On request</span>
                 )}
               </div>
             </article>
@@ -143,10 +145,11 @@ try {
       )}
 
       <p class="sch-note">
-        Это не все детали — точное время занятий и наличие мест подскажем в
-        <a href={WA} target="_blank" rel="noopener" data-cta="whatsapp-schedule-note"> WhatsApp</a>.
-        Если удобного дня или времени нет — напишите нам, часто открываем новые
-        группы под запрос.
+        This isn't every detail — we'll confirm exact class times and available
+        places on
+        <a href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-schedule-note"> WhatsApp</a>.
+        If there's no convenient day or time, message us — we often open new
+        groups on request.
       </p>
     </div>
   </section>
@@ -158,7 +161,6 @@ try {
     background: linear-gradient(180deg, var(--brand-soft), var(--cream));
   }
   .sch-hero .lead { margin-top: 0.5rem; }
-
   .hero-cta { margin-top: 1.6rem; display: flex; flex-wrap: wrap; gap: 0.8rem; }
 
   .sch-list { padding-top: clamp(2rem, 5vw, 3rem); }
@@ -178,11 +180,7 @@ try {
   }
   .sch-card-head h2 { font-size: 1.15rem; margin: 0 0 0.15rem; }
   .sch-sub { color: var(--muted); font-size: 0.85rem; margin: 0 0 0.2rem; }
-  .sch-age {
-    font-weight: 700;
-    color: var(--brand-dark);
-    margin: 0.3rem 0 0;
-  }
+  .sch-age { font-weight: 700; color: var(--brand-dark); margin: 0.3rem 0 0; }
 
   .sch-days {
     display: flex;
@@ -199,10 +197,7 @@ try {
     border-radius: 999px;
     padding: 0.3rem 0.8rem;
   }
-  .sch-day-soft {
-    color: var(--muted);
-    background: var(--line);
-  }
+  .sch-day-soft { color: var(--muted); background: var(--line); }
 
   .sch-note {
     margin-top: 2rem;

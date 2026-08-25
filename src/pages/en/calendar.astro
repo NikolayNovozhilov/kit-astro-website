@@ -1,0 +1,243 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
+  "Hello! I'd like to check the dates on the KIT 2026–2027 calendar",
+)}`;
+
+// Static once-a-year data, transcribed from the KIT Calendar 2026–2027 poster.
+const weekdayTerms = [
+  { n: 1, range: "11 August 2026 — 18 December 2026" },
+  { n: 2, range: "4 January 2027 — 18 June 2027" },
+];
+const weekendTerms = [
+  { n: 1, range: "15 August 2026 — 27 December 2026" },
+  { n: 2, range: "9 January 2027 — 20 June 2027" },
+];
+
+const blocks = [
+  {
+    color: "#f18f38",
+    title: "Public holidays",
+    note: "School closed",
+    items: [
+      { date: "9–10 August 2026", label: "National Day" },
+      { date: "8–9 November 2026", label: "Deepavali" },
+      { date: "25 December 2026", label: "Christmas" },
+      { date: "1 January 2027", label: "New Year" },
+      { date: "6 & 8 February 2027", label: "Chinese New Year" },
+      { date: "10 March 2027", label: "" },
+      { date: "26 March 2027", label: "Good Friday" },
+      { date: "1 May 2027", label: "Labour Day" },
+      { date: "17 May 2027", label: "" },
+      { date: "20 May 2027", label: "" },
+    ],
+  },
+  {
+    color: "#9fbf3b",
+    title: "School breaks",
+    note: "",
+    items: [
+      { date: "3–7 August 2026", label: "Before the year starts" },
+      { date: "19 December 2026 — 3 January 2027", label: "Between terms" },
+      { date: "All of July 2027", label: "Summer break" },
+    ],
+  },
+  {
+    color: "#4ec3e0",
+    title: "Camps",
+    note: "",
+    items: [
+      { date: "28 September — 2 October 2026", label: "" },
+      { date: "21–24 & 28–31 December 2026", label: "Winter" },
+      { date: "9–12 February 2027", label: "" },
+      { date: "19–23 & 26–30 April 2027", label: "" },
+      { date: "17–21 May 2027", label: "" },
+      { date: "21–25 & 28–30 June 2027", label: "Summer" },
+    ],
+  },
+  {
+    color: "#d94f4f",
+    title: "Non-teaching days",
+    note: "Teacher workshops",
+    items: [
+      { date: "21 September 2026", label: "" },
+      { date: "23 March 2027", label: "" },
+      { date: "11 June 2027", label: "" },
+    ],
+  },
+  {
+    color: "#a45cc0",
+    title: "Parent–teacher meetings",
+    note: "Shortened day",
+    items: [
+      { date: "27 November 2026", label: "" },
+      { date: "13 May 2027", label: "" },
+    ],
+  },
+  {
+    color: "#9e9e9e",
+    title: "Shortened days",
+    note: "",
+    items: [{ date: "5 February 2027", label: "" }],
+  },
+  {
+    color: "#ff5fb0",
+    title: "New Year parties",
+    note: "",
+    items: [{ date: "12–13 December 2026", label: "" }],
+  },
+];
+---
+
+<Layout
+  lang="en"
+  altUrl="/calendar"
+  title="Academic Calendar 2026–2027 — KIT Russian Language School in Singapore"
+  description="KIT calendar for 2026–2027: term dates, public holidays, school breaks, camps, non-teaching days and New Year parties."
+>
+  <section class="cal-hero">
+    <div class="container">
+      <span class="eyebrow">Calendar · 2026–2027</span>
+      <h1>Academic calendar</h1>
+      <p class="lead">
+        Term dates, breaks, holidays and camps for the 2026–2027 school year. The
+        class schedule by group is on a separate page.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-ghost" href="/en/schedule/">Class schedule →</a>
+        <a class="btn btn-wa" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-calendar">
+          Ask a question
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cal-terms">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Term dates</span>
+        <h2>When classes run</h2>
+      </div>
+      <div class="cal-term-grid">
+        <article class="cal-term-card">
+          <h3>Weekdays</h3>
+          <ul>
+            {weekdayTerms.map((t) => (
+              <li><span class="cal-term-n">Term {t.n}</span>{t.range}</li>
+            ))}
+          </ul>
+        </article>
+        <article class="cal-term-card">
+          <h3>Saturday / Sunday</h3>
+          <ul>
+            {weekendTerms.map((t) => (
+              <li><span class="cal-term-n">Term {t.n}</span>{t.range}</li>
+            ))}
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cal-dates">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Key dates</span>
+        <h2>Holidays, breaks and events</h2>
+      </div>
+      <div class="cal-grid">
+        {blocks.map((b) => (
+          <article class="cal-card">
+            <header class="cal-card-head">
+              <span class="cal-dot" style={`background:${b.color}`}></span>
+              <div>
+                <h3>{b.title}</h3>
+                {b.note && <p class="cal-note">{b.note}</p>}
+              </div>
+            </header>
+            <ul class="cal-items">
+              {b.items.map((it) => (
+                <li>
+                  <span class="cal-date">{it.date}</span>
+                  {it.label && <span class="cal-label">{it.label}</span>}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+
+      <p class="cal-foot">
+        Dates may be adjusted. We'll always confirm the exact details on
+        <a href={WA} target="_blank" rel="noopener" data-cta="whatsapp-en-calendar-foot"> WhatsApp</a>.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .cal-hero {
+    padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(1.5rem, 4vw, 2.5rem);
+    background: linear-gradient(180deg, var(--brand-soft), var(--cream));
+  }
+  .cal-hero .lead { margin-top: 0.5rem; }
+  .hero-cta { margin-top: 1.6rem; display: flex; flex-wrap: wrap; gap: 0.8rem; }
+
+  .cal-terms { padding: clamp(2.5rem, 5vw, 3.5rem) 0 0; }
+  .cal-term-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.2rem;
+  }
+  .cal-term-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  .cal-term-card h3 { margin-bottom: 1rem; color: var(--brand-dark); }
+  .cal-term-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.9rem; }
+  .cal-term-card li { font-weight: 700; }
+  .cal-term-n {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--brand);
+    margin-bottom: 0.1rem;
+  }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+  }
+  .cal-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+    box-shadow: var(--shadow);
+  }
+  .cal-card-head { display: flex; gap: 0.7rem; align-items: flex-start; margin-bottom: 0.9rem; }
+  .cal-card-head h3 { font-size: 1.1rem; margin: 0; }
+  .cal-dot { flex: none; width: 16px; height: 16px; border-radius: 5px; margin-top: 3px; }
+  .cal-note { color: var(--muted); font-size: 0.85rem; margin: 0.1rem 0 0; }
+
+  .cal-items { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.55rem; }
+  .cal-items li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.6rem;
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--line);
+  }
+  .cal-items li:first-child { border-top: none; padding-top: 0; }
+  .cal-date { font-weight: 700; }
+  .cal-label { color: var(--muted); font-size: 0.9rem; }
+
+  .cal-foot { margin-top: 2rem; color: var(--muted); font-size: 0.95rem; }
+</style>
