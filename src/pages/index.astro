@@ -136,7 +136,8 @@ const reviews = [
         <Image
           src={heroImg}
           alt="Дети на занятиях в школе русского языка KIT в Сингапуре"
-          width={1000}
+          widths={[440, 640, 760, 980]}
+          sizes="(min-width: 900px) 490px, 92vw"
           loading="eager"
           fetchpriority="high"
           class="hero-img"
