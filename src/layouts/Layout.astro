@@ -1,9 +1,6 @@
 ---
-import { Image } from "astro:assets";
+import { Image, Font } from "astro:assets";
 import logo from "../assets/images/branding/logo_kit_learning_trimmed.png";
-// Self-hosted Nunito (variable, upright) — same-origin, includes the Cyrillic
-// subset. Replaces the render-blocking Google Fonts request.
-import "@fontsource-variable/nunito";
 
 export interface Props {
   title?: string;
@@ -171,6 +168,9 @@ const nav = isEn ? navEn : navRu;
     <meta property="og:description" content={description} />
     <meta property="og:locale" content={isEn ? "en_SG" : "ru_RU"} />
     <meta property="og:url" content={canonical} />
+
+    <!-- Self-hosted Nunito + metric-matched fallback + preload (CLS fix) -->
+    <Font cssVariable="--font-nunito" preload />
 
     <script
       type="application/ld+json"
@@ -471,8 +471,8 @@ const nav = isEn ? navEn : navRu;
         --shadow: 0 10px 30px rgba(20, 40, 45, 0.08);
         --shadow-lg: 0 20px 50px rgba(20, 40, 45, 0.12);
         --container: 1160px;
-        --font: "Nunito Variable", "Nunito", system-ui, -apple-system,
-          "Segoe UI", Roboto, sans-serif;
+        --font: var(--font-nunito), system-ui, -apple-system, "Segoe UI",
+          Roboto, sans-serif;
       }
 
       * {
