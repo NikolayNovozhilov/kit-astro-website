@@ -177,23 +177,20 @@ const nav = isEn ? navEn : navRu;
       set:html={JSON.stringify(jsonLd)}
     />
 
-    <!-- Google Analytics 4 -->
-    <script
-      is:inline
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-8JVCX7MNCM"></script>
+    <!-- Analytics: lightweight stubs run now so events queue immediately, while
+         the heavy GA4 + Meta Pixel libraries load off the critical path
+         (first interaction, or browser idle, whichever comes first). -->
     <script is:inline>
+      // GA4 stub — gtag() calls queue in dataLayer until gtag.js loads.
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
+      window.gtag = function () {
         dataLayer.push(arguments);
-      }
+      };
       gtag("js", new Date());
       gtag("config", "G-8JVCX7MNCM");
-    </script>
 
-    <!-- Meta Pixel -->
-    <script is:inline>
-      !(function (f, b, e, v, n, t, s) {
+      // Meta Pixel stub — fbq() calls queue until fbevents.js loads.
+      !(function (f, b, n) {
         if (f.fbq) return;
         n = f.fbq = function () {
           n.callMethod
@@ -205,19 +202,40 @@ const nav = isEn ? navEn : navRu;
         n.loaded = !0;
         n.version = "2.0";
         n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s);
-      })(
-        window,
-        document,
-        "script",
-        "https://connect.facebook.net/en_US/fbevents.js",
-      );
+      })(window, document);
       fbq("init", "2125691227649525");
       fbq("track", "PageView");
+
+      // Load the real libraries lazily — flushes the queued events on load.
+      (function () {
+        var done = false;
+        function load() {
+          if (done) return;
+          done = true;
+          [
+            "https://www.googletagmanager.com/gtag/js?id=G-8JVCX7MNCM",
+            "https://connect.facebook.net/en_US/fbevents.js",
+          ].forEach(function (src) {
+            var t = document.createElement("script");
+            t.async = true;
+            t.src = src;
+            document.head.appendChild(t);
+          });
+        }
+        var evs = ["scroll", "pointerdown", "keydown", "touchstart"];
+        function onInteract() {
+          evs.forEach(function (e) {
+            removeEventListener(e, onInteract);
+          });
+          load();
+        }
+        evs.forEach(function (e) {
+          addEventListener(e, onInteract, { once: true, passive: true });
+        });
+        if ("requestIdleCallback" in window)
+          requestIdleCallback(load, { timeout: 4000 });
+        else setTimeout(load, 3000);
+      })();
     </script>
     <noscript
       ><img
