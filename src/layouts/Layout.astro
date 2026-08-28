@@ -278,6 +278,7 @@ const nav = isEn ? navEn : navRu;
             href={WA}
             target="_blank"
             rel="noopener"
+            aria-label={s.whatsapp}
             data-cta="whatsapp-header"
           >
             <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"
@@ -458,6 +459,8 @@ const nav = isEn ? navEn : navRu;
         --brand-soft: #e6f2f1;
         --accent: #ff7a4d;
         --accent-soft: #fff0e8;
+        /* Darker orange for text/badges that must pass WCAG AA (4.5:1) */
+        --accent-ink: #c0451a;
         --cream: #fffbf5;
         --ink: #22303a;
         --muted: #5c6b74;
@@ -544,7 +547,7 @@ const nav = isEn ? navEn : navRu;
         font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: var(--brand);
+        color: var(--brand-dark);
         background: var(--brand-soft);
         padding: 0.35rem 0.9rem;
         border-radius: 999px;
