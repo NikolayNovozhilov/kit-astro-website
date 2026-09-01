@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
+import { course } from "../lib/schema.ts";
 import heroImg from "../assets/images/neurostart/neurostart_class_group.jpg";
 import sideImg from "../assets/images/neurostart/neurostart_sensory_math.jpg";
 import ageImg from "../assets/images/neurostart/neurostart_water_play.jpg";
@@ -54,6 +55,14 @@ const formats = [
   altUrl="/en/neurostart"
   title="НейроСтарт — раннее развитие детей от 2 лет в Сингапуре | KIT"
   description="НейроСтарт — комплексная программа утренних занятий для малышей и дошкольников от 2 лет в Сингапуре: интеллект, нейрогимнастика, творчество и здоровье. Русский, английский и билингвальный форматы."
+  course={course({
+    lang: "ru",
+    name: "НейроСтарт — комплексное раннее развитие",
+    description:
+      "Утренняя программа для детей 2–6 лет по четырём направлениям: интеллект (речь, чтение, письмо, математика, логика), нейроподход и тело (нейрогимнастика, моторика, спорт), творчество (музыка, арт-мастерские) и здоровье. Группы 2–4 и 4–6 лет. Русский, английский и билингвальный форматы. Занятия в группах, очно.",
+    typicalAgeRange: "2-6",
+    url: "https://www.kit-learning.com/neurostart",
+  })}
 >
   <!-- ===== Hero ===== -->
   <section class="ns-hero">

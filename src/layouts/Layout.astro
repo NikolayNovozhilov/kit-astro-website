@@ -8,6 +8,12 @@ export interface Props {
   lang?: "ru" | "en";
   /** URL of the translated counterpart — enables hreflang tags + the language switch. */
   altUrl?: string;
+  /**
+   * Optional schema.org Course structured data for program pages — one Course
+   * object or an array. Emitted as a second JSON-LD block; each Course should
+   * set `provider` to the org via `@id: …/#org`.
+   */
+  course?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
@@ -15,6 +21,7 @@ const {
   description = "KIT — русская школа в Сингапуре. Уроки русского языка для детей от 18 месяцев до старшеклассников, занятия с логопедом-дефектологом.",
   lang = "ru",
   altUrl,
+  course,
 } = Astro.props;
 
 const isEn = lang === "en";
@@ -61,15 +68,24 @@ const s = isEn
     };
 
 // EducationalOrganization / LocalBusiness structured data for local SEO.
+// Absolute logo URL (built asset) — search engines & AI crawlers need a fully
+// qualified URL, not the root-relative /_astro/ path.
+const logoUrl = new URL(logo.src, Astro.site).href;
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": ["EducationalOrganization", "LocalBusiness"],
+  "@id": "https://www.kit-learning.com/#org",
   name: "KIT Learning",
   alternateName: "KIT — Школа русского языка в Сингапуре",
   url: "https://www.kit-learning.com",
+  logo: logoUrl,
+  image: logoUrl,
   description,
+  inLanguage: ["ru", "en"],
   telephone: "+65 3138 6228",
   email: "kit-enrichment@kit-learning.com",
+  priceRange: "$$",
+  areaServed: "Singapore",
   address: {
     "@type": "PostalAddress",
     streetAddress: "91 Bencoolen St, #08-05 (Office Tower), Sunshine Plaza",
@@ -89,6 +105,14 @@ const jsonLd = {
     "https://t.me/kitbestschoolru",
   ],
 };
+
+// Optional Course structured data (program pages). A single Course is wrapped
+// with @context; multiple are emitted together under @graph.
+const courseLd = course
+  ? Array.isArray(course)
+    ? { "@context": "https://schema.org", "@graph": course }
+    : { "@context": "https://schema.org", ...course }
+  : null;
 
 // Absolute (with leading "/") so they jump to the homepage section from any page,
 // including subpages like /neurostart. On the homepage they still scroll in-page.
@@ -176,6 +200,15 @@ const nav = isEn ? navEn : navRu;
       type="application/ld+json"
       set:html={JSON.stringify(jsonLd)}
     />
+
+    {
+      courseLd && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(courseLd)}
+        />
+      )
+    }
 
     <!-- Analytics: lightweight stubs run now so events queue immediately, while
          the heavy GA4 + Meta Pixel libraries load off the critical path

@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
+import { course } from "../lib/schema.ts";
 
 // Images (Astro optimises these at build time)
 import heroImg from "../assets/images/gallery/summer_camp_kids_1.jpeg";
@@ -25,6 +26,26 @@ import pgParent from "../assets/images/programs/program_parent_child_class.jpg";
 
 const WA =
   "https://wa.me/6580745012?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%20%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D1%8F%20%D0%B2%20KIT";
+
+// Course structured data for the two core (flagship) programmes, which live on
+// this homepage rather than on dedicated pages.
+const courseData = [
+  course({
+    lang: "ru",
+    name: "Субботняя и воскресная школа русского языка",
+    description:
+      "Занятия для детей ~2–14 лет по субботам и воскресеньям, 09:30–12:30. Два блока: академический (чтение, письмо, разговорная речь, математика) и всестороннее развитие (арт-студия, наука, шахматы, кулинарные мастер-классы). Программа выстроена по возрасту — от подготовки к школе до средних классов. Занятия в группах, очно.",
+    typicalAgeRange: "2-14",
+    url: "https://www.kit-learning.com/#programs",
+  }),
+  course({
+    lang: "ru",
+    name: "Развитие речи и логопед-дефектолог",
+    description:
+      "Индивидуальные занятия с логопедом-дефектологом для детей-билингвов: развитие речи, звукопроизношение, артикуляционная и дыхательная гимнастика, логопедический массаж, развитие мелкой и крупной моторики и сенсорное развитие. Очно, один на один.",
+    url: "https://www.kit-learning.com/#programs",
+  }),
+];
 
 // Tailored pre-fill for the NeuroStart CTA
 const NEUROSTART_WA = `https://wa.me/6580745012?text=${encodeURIComponent(
@@ -100,7 +121,7 @@ const reviews = [
 ];
 ---
 
-<Layout altUrl="/en/">
+<Layout altUrl="/en/" course={courseData}>
   <!-- ===== Hero ===== -->
   <section class="hero" id="top">
     <div class="container hero-inner">

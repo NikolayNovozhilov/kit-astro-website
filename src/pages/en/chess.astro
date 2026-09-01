@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
+import { course } from "../../lib/schema.ts";
 import heroImg from "../../assets/images/programs/program_chess_class.jpg";
 import coachImg from "../../assets/images/teachers/teacher_valeriia_lovetskaia_chess.jpeg";
 
@@ -31,6 +32,14 @@ const groups = [
   altUrl="/chess"
   title="Chess for Kids in Singapore — KIT Chess School"
   description="Chess school for children in Singapore: a beginner group (from age 4) and a players group (11–14). Logic, strategy, tournaments. Sunday classes with an experienced coach."
+  course={course({
+    lang: "en",
+    name: "Chess for Kids",
+    description:
+      "Chess school for children in Singapore: a beginner group (from age 4) — logic, focus, strategy; and a players group (11–14) — tournaments, openings, endgames, game analysis. Sunday classes with an experienced coach. In-person groups.",
+    typicalAgeRange: "4-14",
+    url: "https://www.kit-learning.com/en/chess",
+  })}
 >
   <!-- Hero -->
   <section class="chess-hero">

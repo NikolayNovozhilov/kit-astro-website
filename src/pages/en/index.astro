@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
+import { course } from "../../lib/schema.ts";
 
 import heroImg from "../../assets/images/gallery/summer_camp_kids_1.jpeg";
 import weekendImg from "../../assets/images/programs/program_weekend_school.jpg";
@@ -15,6 +16,26 @@ import statIcon3 from "../../assets/images/icons/icon_teaching.png";
 const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
   "Hello! I'd like to know more about classes at KIT",
 )}`;
+
+// Course structured data for the two core (flagship) programmes, which live on
+// this homepage rather than on dedicated pages.
+const courseData = [
+  course({
+    lang: "en",
+    name: "Weekend Russian Language School",
+    description:
+      "Classes for children aged ~2–14 on Saturdays and Sundays, 09:30–12:30. Two blocks: academic (reading, writing, spoken Russian, maths) and all-round development (art studio, science, chess, cooking workshops). Structured by age, from school preparation to middle school. Small in-person groups.",
+    typicalAgeRange: "2-14",
+    url: "https://www.kit-learning.com/en/#programs",
+  }),
+  course({
+    lang: "en",
+    name: "Speech Development & Speech Therapy",
+    description:
+      "One-on-one sessions with a speech-language therapist experienced with bilingual children: speech development, articulation and breathing exercises, sound production, speech-therapy massage, fine and gross motor skills, and sensory development. In-person, individual.",
+    url: "https://www.kit-learning.com/en/#programs",
+  }),
+];
 
 const stats = [
   { icon: statIcon1, value: "100+", label: "students" },
@@ -77,6 +98,7 @@ const reviews = [
   altUrl="/"
   title="Russian Language School in Singapore for Kids | KIT"
   description="Russian classes for children in Singapore — from 10 months to teens. Weekend school, speech therapy, IB & IGCSE Russian, and camps. Message us on WhatsApp."
+  course={courseData}
 >
   <!-- Hero -->
   <section class="hero" id="top">

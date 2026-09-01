@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { course } from "../../lib/schema.ts";
 
 const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
   "Hello! I'd like to know about IB Russian preparation at KIT",
@@ -32,6 +33,14 @@ const steps = [
   altUrl="/ib-russian"
   title="IB Russian Language & Literature Tutoring in Singapore | KIT"
   description="IB Russian exam prep: Russian A Literature, Language & Literature, Russian B (SL/HL) and MYP. 10+ years' experience, individual programmes, top-university placements."
+  course={course({
+    lang: "en",
+    name: "IB Russian Language & Literature Exam Preparation",
+    description:
+      "One-on-one preparation for IB Russian exams: Russian A Literature, Russian A Language and Literature, Russian B (Standard and Higher Level) and MYP. 10+ years' experience, level diagnostics and a long-term individual plan. Individual tutoring.",
+    educationalLevel: "IB Diploma Programme (SL/HL), MYP",
+    url: "https://www.kit-learning.com/en/ib-russian",
+  })}
 >
   <!-- Hero -->
   <section class="exam-hero">

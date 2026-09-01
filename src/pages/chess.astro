@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
+import { course } from "../lib/schema.ts";
 import heroImg from "../assets/images/programs/program_chess_class.jpg";
 import coachImg from "../assets/images/teachers/teacher_valeriia_lovetskaia_chess.jpeg";
 
@@ -30,6 +31,14 @@ const groups = [
   altUrl="/en/chess"
   title="Шахматы для детей в Сингапуре — шахматная школа KIT"
   description="Шахматная школа для детей в Сингапуре: группы для начинающих (от 4 лет) и играющих (11–14 лет). Логика, стратегия, турниры. Занятия по воскресеньям с опытным тренером."
+  course={course({
+    lang: "ru",
+    name: "Шахматы для детей",
+    description:
+      "Шахматная школа для детей в Сингапуре: группа для начинающих (от 4 лет) — логика, внимание, стратегия; и группа для играющих (11–14 лет) — турниры, дебюты, эндшпили, анализ партий. Занятия по воскресеньям с опытным тренером. В группах, очно.",
+    typicalAgeRange: "4-14",
+    url: "https://www.kit-learning.com/chess",
+  })}
 >
   <!-- Hero -->
   <section class="chess-hero">

@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { course } from "../../lib/schema.ts";
 
 const WA = `https://wa.me/6580745012?text=${encodeURIComponent(
   "Hello! I'd like to know about IGCSE Russian preparation at KIT",
@@ -30,6 +31,14 @@ const steps = [
   altUrl="/igcse-russian"
   title="IGCSE Russian Tutoring in Singapore | KIT"
   description="IGCSE Russian exam prep: First Language, Second Language, Foreign Language. 10+ years' experience, individual programmes, top grades."
+  course={course({
+    lang: "en",
+    name: "IGCSE Russian Exam Preparation",
+    description:
+      "One-on-one preparation for IGCSE Russian exams: First Language, Second Language and Foreign Language. 10+ years' experience, level diagnostics, and focused work on vocabulary, grammar, written papers and reading comprehension. Individual tutoring.",
+    educationalLevel: "IGCSE",
+    url: "https://www.kit-learning.com/en/igcse-russian",
+  })}
 >
   <!-- Hero -->
   <section class="exam-hero">
