@@ -119,9 +119,42 @@ const reviews = [
     text: "Highly recommended school with small class setup environment and individual approach to every student. Great option if you are looking for personalised attention to your child while following IPC. Run by motivated, enthusiastic and qualified specialists and teachers!",
   },
 ];
+
+// FAQ — the source of truth for both the visible section below and the
+// FAQPage JSON-LD (passed to Layout). Keep the two in sync via this array.
+const faq = [
+  {
+    q: "«Ребёнок почти не говорит по-русски — ему подойдёт?»",
+    a: "Да. У нас занимаются дети с самым разным уровнем русского — от свободного до нескольких слов. Мы подбираем группу и темп под ребёнка, а на занятиях говорить и ошибаться совсем не страшно.",
+  },
+  {
+    q: "С какого возраста вы принимаете детей?",
+    a: "Мы занимаемся с детьми от 10 месяцев до старшеклассников. Для малышей есть программа НейроСтарт (2–6 лет) и группы раннего развития, для школьников — субботняя и воскресная школа, будничные занятия и подготовка к международным экзаменам.",
+  },
+  {
+    q: "Какие программы вы предлагаете?",
+    a: "Субботняя и воскресная школа русского языка, комплексное раннее развитие НейроСтарт, шахматы, индивидуальные занятия с логопедом-дефектологом, десятки будничных занятий (музыка, искусство, наука, программирование и другие), подготовка к IB и IGCSE, а также каникулярные лагеря.",
+  },
+  {
+    q: "Вы готовите к международным экзаменам по русскому языку?",
+    a: "Да. Более 10 лет мы готовим к экзаменам IB (Russian A: Literature, Language and Literature, Russian B — SL/HL, а также MYP) и IGCSE (First, Second и Foreign Language). Занятия индивидуальные, в смешанном формате — очно и онлайн.",
+  },
+  {
+    q: "На каком языке проходят занятия?",
+    a: "В основном на русском — наша цель помочь детям сохранить родной язык, живя в англоязычной среде. Программа НейроСтарт также доступна на английском и в билингвальном формате.",
+  },
+  {
+    q: "Есть ли занятия с логопедом?",
+    a: "Да. Наш логопед-дефектолог с большим опытом работы с детьми-билингвами проводит индивидуальные занятия: развитие речи, звукопроизношение, артикуляционная и дыхательная гимнастика, логопедический массаж, развитие мелкой и крупной моторики и сенсорики.",
+  },
+  {
+    q: "Где вы находитесь?",
+    a: "Мы находимся по адресу 91 Bencoolen St, #08-05 (Office Tower), Sunshine Plaza, Singapore 189652 — в 3 минутах пешком от станции метро Bencoolen. Часы работы онлайн: 9:00–18:00, 7 дней в неделю.",
+  },
+];
 ---
 
-<Layout altUrl="/en/" course={courseData}>
+<Layout altUrl="/en/" course={courseData} faq={faq}>
   <!-- ===== Hero ===== -->
   <section class="hero" id="top">
     <div class="container hero-inner">
@@ -475,23 +508,26 @@ const reviews = [
     </div>
   </section>
 
-  <!-- ===== FAQ teaser ===== -->
-  <section class="faq">
-    <div class="container faq-inner">
-      <div>
-        <span class="eyebrow">Частый вопрос</span>
-        <h2>«Ребёнок почти не говорит по-русски — ему подойдёт?»</h2>
+  <!-- ===== FAQ ===== -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-head faq-head">
+        <span class="eyebrow">Частые вопросы</span>
+        <h2>Отвечаем на частые вопросы</h2>
       </div>
-      <div class="faq-answer">
-        <p>
-          Да. У нас занимаются дети с самым разным уровнем русского — от
-          свободного до нескольких слов. Мы подбираем группу и темп под ребёнка,
-          а на занятиях говорить и ошибаться совсем не страшно.
-        </p>
-        <a class="btn btn-wa btn-sm" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-faq">
-          Спросить про вашего ребёнка
-        </a>
+      <div class="faq-list">
+        {
+          faq.map((item, i) => (
+            <details class="faq-item" open={i === 0}>
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))
+        }
       </div>
+      <a class="btn btn-wa faq-cta" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-faq">
+        Не нашли ответ? Напишите в WhatsApp
+      </a>
     </div>
   </section>
 
@@ -966,18 +1002,57 @@ const reviews = [
     background: rgba(255, 255, 255, 0.15);
     color: #fff;
   }
-  .faq-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(1.5rem, 5vw, 3.5rem);
-    align-items: center;
+  .faq-head {
+    max-width: 46rem;
+    margin-bottom: 2rem;
   }
   .faq h2 {
     color: #fff;
     margin: 0;
   }
-  .faq-answer p {
-    font-size: 1.1rem;
+  .faq-list {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 52rem;
+  }
+  .faq-item {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    padding: 0 1.25rem;
+  }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: #fff;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary::after {
+    content: "+";
+    font-size: 1.5rem;
+    line-height: 1;
+    flex: none;
+    color: #9fd5cd;
+  }
+  .faq-item[open] summary::after {
+    content: "–";
+  }
+  .faq-item p {
+    margin: 0 0 1.15rem;
+    font-size: 1.02rem;
+    color: #d3e6e2;
+  }
+  .faq-cta {
+    margin-top: 1.8rem;
   }
 
   /* ===== Contact ===== */
@@ -1027,7 +1102,6 @@ const reviews = [
     .cat-grid,
     .camps-inner,
     .teacher-grid,
-    .faq-inner,
     .contact-inner {
       grid-template-columns: 1fr;
     }

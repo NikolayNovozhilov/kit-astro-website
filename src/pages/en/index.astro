@@ -91,6 +91,39 @@ const reviews = [
     text: "Huge thanks to the wonderful teachers at KIT for their professionalism, individual approach, personal support and family atmosphere. I recommend it for children who feel stressed in large international schools and need more attentive care.",
   },
 ];
+
+// FAQ — the source of truth for both the visible section below and the
+// FAQPage JSON-LD (passed to Layout). Keep the two in sync via this array.
+const faq = [
+  {
+    q: "My child barely speaks Russian — is this suitable?",
+    a: "Yes. Our students have every level of Russian — from fluent to just a few words. We match the group and pace to your child, and in class it's completely fine to speak and make mistakes.",
+  },
+  {
+    q: "From what age do you accept children?",
+    a: "We work with children from 10 months to secondary-school age. For little ones there's the NeuroStart programme (ages 2–6) and early-development groups; for school-age children there's the weekend school, weekday classes and international-exam preparation.",
+  },
+  {
+    q: "What programmes do you offer?",
+    a: "Weekend Russian language school, NeuroStart comprehensive early development, chess, one-on-one speech therapy, dozens of weekday classes (music, art, science, coding and more), IB and IGCSE Russian exam preparation, and holiday camps.",
+  },
+  {
+    q: "Do you prepare students for international exams in Russian?",
+    a: "Yes. For 10+ years we've prepared students for IB (Russian A: Literature, Language and Literature, Russian B — SL/HL, and MYP) and IGCSE (First, Second and Foreign Language). Lessons are individual and blended — in person and online.",
+  },
+  {
+    q: "What language are classes taught in?",
+    a: "Mostly Russian — our goal is to help children keep their mother tongue while growing up in an English-speaking environment. The NeuroStart programme is also available in English and in a bilingual format.",
+  },
+  {
+    q: "Do you offer speech therapy?",
+    a: "Yes. Our speech-language therapist, experienced with bilingual children, runs one-on-one sessions: speech development, sound production, articulation and breathing exercises, speech-therapy massage, and fine/gross motor and sensory development.",
+  },
+  {
+    q: "Where are you located?",
+    a: "We're at 91 Bencoolen St, #08-05 (Office Tower), Sunshine Plaza, Singapore 189652 — a 3-minute walk from Bencoolen MRT. Online hours: 9:00–18:00, 7 days a week.",
+  },
+];
 ---
 
 <Layout
@@ -99,6 +132,7 @@ const reviews = [
   title="Russian Language School in Singapore for Kids | KIT"
   description="Russian classes for children in Singapore — from 10 months to teens. Weekend school, speech therapy, IB & IGCSE Russian, and camps. Message us on WhatsApp."
   course={courseData}
+  faq={faq}
 >
   <!-- Hero -->
   <section class="hero" id="top">
@@ -307,6 +341,29 @@ const reviews = [
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-head faq-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        {
+          faq.map((item, i) => (
+            <details class="faq-item" open={i === 0}>
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+      <a class="btn btn-wa faq-cta" href={WA} target="_blank" rel="noopener" data-cta="whatsapp-faq">
+        Didn't find your answer? Message us on WhatsApp
+      </a>
+    </div>
+  </section>
+
   <!-- Contact -->
   <section class="contact" id="contact">
     <div class="container contact-inner">
@@ -395,6 +452,20 @@ const reviews = [
   .teacher-bio { color: var(--muted); font-size: 0.96rem; margin: 0; text-align: left; }
 
   .reviews { background: linear-gradient(180deg, var(--cream), #fff); }
+
+  /* ===== FAQ ===== */
+  .faq { background: var(--brand-dark); color: #eaf5f3; }
+  .faq .eyebrow { background: rgba(255, 255, 255, 0.15); color: #fff; }
+  .faq h2 { color: #fff; margin: 0; }
+  .faq-head { max-width: 46rem; margin-bottom: 2rem; }
+  .faq-list { display: grid; gap: 0.75rem; max-width: 52rem; }
+  .faq-item { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 14px; padding: 0 1.25rem; }
+  .faq-item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.1rem 0; font-weight: 800; font-size: 1.05rem; color: #fff; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; font-size: 1.5rem; line-height: 1; flex: none; color: #9fd5cd; }
+  .faq-item[open] summary::after { content: "–"; }
+  .faq-item p { margin: 0 0 1.15rem; font-size: 1.02rem; color: #d3e6e2; }
+  .faq-cta { margin-top: 1.8rem; }
   .review-grid { columns: 3; column-gap: 1.4rem; }
   .review-card { break-inside: avoid; margin: 0 0 1.4rem; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1.4rem 1.5rem; box-shadow: var(--shadow); }
   .review-stars { color: #f7b500; letter-spacing: 2px; margin-bottom: 0.6rem; }

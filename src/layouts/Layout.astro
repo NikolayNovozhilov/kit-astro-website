@@ -14,14 +14,20 @@ export interface Props {
    * set `provider` to the org via `@id: …/#org`.
    */
   course?: Record<string, unknown> | Record<string, unknown>[];
+  /**
+   * Optional FAQ items for pages with a visible FAQ section. Emitted as
+   * FAQPage JSON-LD — the questions/answers MUST match the on-page content.
+   */
+  faq?: { q: string; a: string }[];
 }
 
 const {
   title = "Школа русского языка в Сингапуре — KIT | Занятия для детей от 10 месяцев",
-  description = "KIT — русская школа в Сингапуре. Уроки русского языка для детей от 18 месяцев до старшеклассников, занятия с логопедом-дефектологом.",
+  description = "KIT — русская школа в Сингапуре. Уроки русского языка для детей от 10 месяцев до старшеклассников, занятия с логопедом-дефектологом.",
   lang = "ru",
   altUrl,
   course,
+  faq,
 } = Astro.props;
 
 const isEn = lang === "en";
@@ -113,6 +119,20 @@ const courseLd = course
     ? { "@context": "https://schema.org", "@graph": course }
     : { "@context": "https://schema.org", ...course }
   : null;
+
+// Optional FAQPage structured data — mirrors the visible FAQ section.
+const faqLd =
+  faq && faq.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faq.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      }
+    : null;
 
 // Absolute (with leading "/") so they jump to the homepage section from any page,
 // including subpages like /neurostart. On the homepage they still scroll in-page.
@@ -206,6 +226,15 @@ const nav = isEn ? navEn : navRu;
         <script
           type="application/ld+json"
           set:html={JSON.stringify(courseLd)}
+        />
+      )
+    }
+
+    {
+      faqLd && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(faqLd)}
         />
       )
     }
