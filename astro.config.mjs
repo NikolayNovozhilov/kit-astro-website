@@ -8,6 +8,11 @@ export default defineConfig({
   site: 'https://www.kit-learning.com',
   // Generates /sitemap-index.xml (+ /sitemap-0.xml) listing all pages, using the www canonical.
   integrations: [sitemap()],
+  build: {
+    // Inline all CSS into <style> tags — removes the render-blocking stylesheet
+    // request that delayed the (text) LCP on content pages. The CSS is tiny.
+    inlineStylesheets: "always",
+  },
   experimental: {
     // Self-host Nunito + auto-generate a metric-matched fallback (prevents
     // font-swap layout shift / CLS) + preload. Replaces the @fontsource import.
